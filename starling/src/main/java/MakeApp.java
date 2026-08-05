@@ -1,18 +1,14 @@
-package congressapp.src.main.java;
+package starling.src.main.java;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.LayoutManager;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 //
 //make function that returns JText Area with text from file later
 //
