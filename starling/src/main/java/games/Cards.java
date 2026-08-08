@@ -54,7 +54,7 @@ public class Cards {
         panel.add(title, BorderLayout.NORTH);
 
         JPanel game = new JPanel();
-        game.setLayout(new GridLayout(2, 5, 8, 8));
+        game.setLayout(new GridLayout(2, 4, 8, 8));
         cardButtonsList.clear();
 
         int index = 0;
@@ -117,7 +117,7 @@ public class Cards {
     }
 
     private void runNextTurnSequence() {
-        makeCards(10, 1, 20);
+        makeCards(8, 1, 20);
         currmessage = makeQuestion();
 
         if (parentPanel != null) {
@@ -138,14 +138,14 @@ public class Cards {
             btn.setEnabled(false);
         }
 
-        Timer timer = new Timer(3000, e -> {
+        Timer timer = new Timer(10000, e -> {
             for (JButton btn : cardButtonsList) {
                 btn.setText("?");
                 btn.setEnabled(true);
             }
             if (this.statsArea != null) {
                 this.statsArea.setText("<html><div style='text-align: center;'>" + currmessage + "<br>Score: "
-                        + this.currscore + ", Streak: " + this.currstreak + "</div></html>");
+                        + this.currscore + ", Streak: " + this.currstreak + ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak")+ "</div></html>");
             }
         });
         timer.setRepeats(false);
@@ -155,7 +155,7 @@ public class Cards {
     public void updateLiveStats(String matchOutcome) {
         if (this.statsArea != null) {
             this.statsArea.setText("<html><div style='text-align: center;'>" + matchOutcome + "<br>Score: "
-                    + this.currscore + ", Streak: " + this.currstreak + "</div></html>");
+                    + this.currscore+", Streak: " + this.currstreak + ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak")+"</div></html>");
         }
         if (this.continueButton != null) {
             this.continueButton.setEnabled(true);
@@ -215,7 +215,7 @@ public class Cards {
     }
 
     public String printStat() {
-        return "Score: " + this.currscore + ", Streak: " + this.currstreak;
+        return "Score: " + this.currscore + ", Streak: " + this.currstreak+", High Score: "+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak");
     }
 
     public void save() {

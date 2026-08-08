@@ -1,1 +1,10 @@
-{}
+{
+  "cards" : {
+    "total_games" : 5,
+    "total_wins" : 4,
+    "highest_streak" : 1,
+    "curr_score" : -5,
+    "highest_score" : 10,
+    "curr_streak" : 1
+  }
+}

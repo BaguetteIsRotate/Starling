@@ -112,6 +112,7 @@ public class MakeApp extends JFrame {
         JPanel page = new JPanel();
         Color color = new Color(255, 248, 231);
         page.setBackground(color);
+        JLabel title = new JLabel("Exercises");
         JPanel smol = new JPanel();
         page.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         smol.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -133,6 +134,8 @@ public class MakeApp extends JFrame {
             revalidate();
             repaint();
         });
+        smol.setLayout(new BorderLayout());
+        smol.add(title,BorderLayout.NORTH);
         smol.add(buttonMain);
         Cards cards = new Cards();
         JPanel big = new JPanel();
