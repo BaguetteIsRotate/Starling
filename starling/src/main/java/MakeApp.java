@@ -21,7 +21,7 @@ public class MakeApp extends JFrame {
     JPanel pageInfoA;
     JPanel pageInfoB;
     JPanel pageInfoC;
-
+    JPanel pageInfoD;
     public MakeApp() {
         // make JFrame
         super("Starling");
@@ -34,9 +34,10 @@ public class MakeApp extends JFrame {
         pageOne = PageOne();
         pageTwo = PageTwo();
         pageMain = PageMain();
-        pageInfoA = PageInfoA("starling/src/main/java/filler.txt", "What is Alzheimer's Disease?");
-        pageInfoB = PageInfoA("starling/src/main/java/filler.txt", "What is Alzheimer's Disease?");
-        pageInfoC = PageInfoA("starling/src/main/java/filler.txt", "What is Alzheimer's Disease?");
+        pageInfoA = PageInfoA("starling/src/main/java/text1.txt", "What is Alzheimer's Disease?");
+        pageInfoB = PageInfoA("starling/src/main/java/text2.txt", "What is Alzheimer's Disease?");
+        pageInfoC = PageInfoA("starling/src/main/java/text3.txt", "What is Alzheimer's Disease?");
+        pageInfoD = PageInfoA("starling/src/main/java/text4.txt", "What is Alzheimer's Disease?");
         add(pageMain);
         revalidate();
     }
@@ -218,14 +219,20 @@ public class MakeApp extends JFrame {
 
         buttonB.addActionListener(e -> {
             remove(pageTwo);
-            add(pageInfoA);
+            add(pageInfoB);
             revalidate();
             repaint();
         });
 
         buttonC.addActionListener(e -> {
             remove(pageTwo);
-            add(pageInfoA);
+            add(pageInfoC);
+            revalidate();
+            repaint();
+        });
+        buttonD.addActionListener(e -> {
+            remove(pageTwo);
+            add(pageInfoD);
             revalidate();
             repaint();
         });
