@@ -11,6 +11,7 @@ Starling, named after the bird behind [murmurations](https://www.inhf.org/about-
 Studies have shown that cognitive activities alongside physical and social activities may provide benefits for patients. \[[2](https://pubmed.ncbi.nlm.nih.gov/37600508/)\]
 
 Starling offers information and cognitive activities, which can be accessed by clicking the respective buttons as shown below:
+
 <img width="393" height="793" alt="Screenshot 2026-08-07 at 10 53 48 PM" src="https://github.com/user-attachments/assets/ef035a98-ff8e-4622-bad1-58bb1d966745" />
 
 Here is a silent video tour of the current UI. Note that on the Info page, the buttons labeled "B", "C", and "D" do not actually lead to articles yet; they still have to be written.
