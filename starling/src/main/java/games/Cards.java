@@ -145,7 +145,7 @@ public class Cards {
             }
             if (this.statsArea != null) {
                 this.statsArea.setText("<html><div style='text-align: center;'>" + currmessage + "<br>Score: "
-                        + this.currscore + ", Streak: " + this.currstreak + ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak")+ "</div></html>");
+                        + this.currscore + ", Streak: " + this.currstreak +"\n"+ ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak")+ "</div></html>");
             }
         });
         timer.setRepeats(false);
@@ -155,7 +155,7 @@ public class Cards {
     public void updateLiveStats(String matchOutcome) {
         if (this.statsArea != null) {
             this.statsArea.setText("<html><div style='text-align: center;'>" + matchOutcome + "<br>Score: "
-                    + this.currscore+", Streak: " + this.currstreak + ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak")+"</div></html>");
+                    + this.currscore+", Streak: " + this.currstreak +"\n"+ ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak")+"</div></html>");
         }
         if (this.continueButton != null) {
             this.continueButton.setEnabled(true);
