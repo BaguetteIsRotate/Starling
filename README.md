@@ -16,6 +16,8 @@ Starling offers information and cognitive activities, which can be accessed by c
 <img width="303" height="543" alt="Screenshot 2026-08-07 at 10 53 48 PM" src="https://github.com/user-attachments/assets/e7a2da50-5d5e-4692-a234-7fa3ae411d81" />
 Here is a silent video tour of the current UI. Note that on the Info page, the buttons labeled "B", "C", and "D" do not actually lead to articles yet; they still have to be written.
 
+
+
 References: 
 1.  Lui F, Tsao JW. Alzheimer Disease. ncbibooksFebruary 12, 2024. Accessed August 7, 2026. [https://www.ncbi.nlm.nih.gov/books/NBK499922/](https://www.ncbi.nlm.nih.gov/books/NBK499922/)
 2.  Pahlavani HA. Exercise therapy to prevent and treat Alzheimer’s disease. Frontiers in Aging Neuroscience2023;15. [doi:10.3389/fnagi.2023.1243869](https://pubmed.ncbi.nlm.nih.gov/37600508/)
