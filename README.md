@@ -1,3 +1,4 @@
+
 <img width="567.5" height="223.5" alt="app_title" src="https://github.com/user-attachments/assets/cb5ee6ee-1a9c-41f8-aca5-c71c772a0a65" />
 
 Alzheimer's disease(AD) is a neurodegenerative disease which accounts for about two-thirds of dementia cases. In 2022, it was the seventh leading cause of death in the United States. Caused by an accumulation of abnormal plaques and tangles of nerve fibers in the brain, Alzheimer's disease remains incurable. \[[1](https://www.ncbi.nlm.nih.gov/books/NBK499922/)\]
@@ -12,8 +13,7 @@ Studies have shown that cognitive activities alongside physical and social activ
 
 Starling offers information and cognitive activities, which can be accessed by clicking the respective buttons as shown below:
 
-<img width="393" height="793" alt="Screenshot 2026-08-07 at 10 53 48 PM" src="https://github.com/user-attachments/assets/ef035a98-ff8e-4622-bad1-58bb1d966745" />
-
+<img width="303" height="543" alt="Screenshot 2026-08-07 at 10 53 48 PM" src="https://github.com/user-attachments/assets/e7a2da50-5d5e-4692-a234-7fa3ae411d81" />
 Here is a silent video tour of the current UI. Note that on the Info page, the buttons labeled "B", "C", and "D" do not actually lead to articles yet; they still have to be written.
 
 References: 
