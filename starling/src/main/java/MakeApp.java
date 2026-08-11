@@ -143,7 +143,7 @@ public class MakeApp extends JFrame {
         JButton button = new JButton("Play Cards");
         big.add(button);
         button.addActionListener(e -> {
-            cards.playgame(big);
+            cards.gamegamegamegame(big);
         });
         page.setLayout(new BorderLayout());
         page.add(smol, BorderLayout.NORTH);

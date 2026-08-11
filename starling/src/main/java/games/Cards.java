@@ -34,10 +34,10 @@ public class Cards {
     private HashMap<String, Integer> statmap = load();
     private Cards x;
     private JPanel panel;
-    private JPanel parentPanel;
+    private JPanel theMother;
     private JLabel statsArea;
-    private JButton continueButton;
-    private ArrayList<JButton> cardButtonsList = new ArrayList<>();
+    private JButton continueahhh;
+    private ArrayList<JButton> listiesofbuttonsies = new ArrayList<>();
 
     public JPanel getPanel() {
         makeJPanel(currstreak, currscore, cards, currmessage, x);
@@ -55,16 +55,16 @@ public class Cards {
 
         JPanel game = new JPanel();
         game.setLayout(new GridLayout(2, 4, 8, 8));
-        cardButtonsList.clear();
+        listiesofbuttonsies.clear();
 
         int index = 0;
         if (cards != null) {
             for (int i : cards) {
                 Card card1 = new Card(i, index);
                 index++;
-                JButton btn = card1.makeButton(card);
-                cardButtonsList.add(btn);
-                game.add(btn);
+                JButton bhutan = card1.makeButton(card);
+                listiesofbuttonsies.add(bhutan);
+                game.add(bhutan);
             }
         }
         panel.add(game, BorderLayout.CENTER);
@@ -75,90 +75,90 @@ public class Cards {
             this.statsArea = new JLabel();
             this.statsArea.setHorizontalAlignment(SwingConstants.CENTER);
         }
-        this.statsArea.setText("<html><div style='text-align: center;'> Memorize the cards... </div></html>");
+        this.statsArea.setText("Memorize the cards or you shall suffers");
         southPanel.add(this.statsArea, BorderLayout.CENTER);
 
-        JPanel controlButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        this.continueButton = new JButton("Continue");
-        this.continueButton.setEnabled(false);
-        this.continueButton.addActionListener(e -> {
-            runNextTurnSequence();
+        JPanel happybuttonsies = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        this.continueahhh = new JButton("I WISH TO CONTINUE :D");
+        this.continueahhh.setEnabled(false);
+        this.continueahhh.addActionListener(e -> {
+            nextiesheehee();
         });
 
-        JButton endButton = new JButton("End Current Game");
-        endButton.addActionListener(e -> {
-            if (parentPanel != null) {
-                parentPanel.removeAll();
-                JButton button = new JButton("Play Cards");
+        JButton buttonofDeatttthhhh = new JButton("KILL GAME");
+        buttonofDeatttthhhh.addActionListener(e -> {
+            if (theMother != null) {
+                theMother.removeAll();
+                JButton button = new JButton("PLAY CARDS!!!");
                 button.addActionListener(f -> {
-                    playgame(this.parentPanel);
+                    gamegamegamegame(this.theMother);
                 });
-                parentPanel.add(button);
-                parentPanel.revalidate();
-                parentPanel.repaint();
+                theMother.add(button);
+                theMother.revalidate();
+                theMother.repaint();
             }
         });
 
-        controlButtons.add(this.continueButton);
-        controlButtons.add(endButton);
-        southPanel.add(controlButtons, BorderLayout.SOUTH);
+        happybuttonsies.add(this.continueahhh);
+        happybuttonsies.add(buttonofDeatttthhhh);
+        southPanel.add(happybuttonsies, BorderLayout.SOUTH);
 
         panel.add(southPanel, BorderLayout.SOUTH);
         return panel;
     }
 
-    public void playgame(JPanel panel2) {
-        this.parentPanel = panel2;
+    public void gamegamegamegame(JPanel panel2) {
+        this.theMother = panel2;
         this.x = this;
         statmap = load();
         statmap.put("total_games", statmap.get("total_games") + 1);
 
-        runNextTurnSequence();
+        nextiesheehee();
     }
 
-    private void runNextTurnSequence() {
+    private void nextiesheehee() {
         makeCards(8, 1, 20);
         currmessage = makeQuestion();
 
-        if (parentPanel != null) {
+        if (theMother != null) {
             if (this.panel != null) {
-                parentPanel.remove(this.panel);
+                theMother.remove(this.panel);
             }
             this.panel = makeJPanel(currstreak, currscore, getCards(), currmessage, this);
-            parentPanel.add(this.panel);
-            parentPanel.revalidate();
-            parentPanel.repaint();
+            theMother.add(this.panel);
+            theMother.revalidate();
+            theMother.repaint();
 
-            startMemoryTimer();
+            startTheBomb();
         }
     }
 
-    private void startMemoryTimer() {
-        for (JButton btn : cardButtonsList) {
-            btn.setEnabled(false);
+    private void startTheBomb() {
+        for (JButton bhutan : listiesofbuttonsies) {
+            bhutan.setEnabled(false);
         }
 
         Timer timer = new Timer(10000, e -> {
-            for (JButton btn : cardButtonsList) {
-                btn.setText("?");
-                btn.setEnabled(true);
+            for (JButton bhutan : listiesofbuttonsies) {
+                bhutan.setText("?");
+                bhutan.setEnabled(true);
             }
             if (this.statsArea != null) {
-                this.statsArea.setText("<html><div style='text-align: center;'>" + currmessage + "<br>Score: "
-                        + this.currscore + ", Streak: " + this.currstreak +"\n"+ ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak")+ "</div></html>");
+                this.statsArea.setText(currmessage + "\n Score: "
+                        + this.currscore + ", Streak: " + this.currstreak +"\n"+ ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak"));
             }
         });
         timer.setRepeats(false);
         timer.start();
     }
 
-    public void updateLiveStats(String matchOutcome) {
+    public void updateLiveStats(String whoDied) {
         if (this.statsArea != null) {
-            this.statsArea.setText("<html><div style='text-align: center;'>" + matchOutcome + "<br>Score: "
-                    + this.currscore+", Streak: " + this.currstreak +"\n"+ ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak")+"</div></html>");
+            this.statsArea.setText(whoDied + "<br>Score: "
+                    + this.currscore+", Streak: " + this.currstreak +"\n"+ ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak"));
         }
-        if (this.continueButton != null) {
-            this.continueButton.setEnabled(true);
+        if (this.continueahhh != null) {
+            this.continueahhh.setEnabled(true);
         }
     }
 
