@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import games.Cards;
+
 public class MakeApp extends JFrame {
     JFrame app;
     JPanel pageMain;
@@ -22,6 +23,7 @@ public class MakeApp extends JFrame {
     JPanel pageInfoB;
     JPanel pageInfoC;
     JPanel pageInfoD;
+
     public MakeApp() {
         // make JFrame
         super("Starling");
@@ -136,7 +138,7 @@ public class MakeApp extends JFrame {
             repaint();
         });
         smol.setLayout(new BorderLayout());
-        smol.add(title,BorderLayout.NORTH);
+        smol.add(title, BorderLayout.NORTH);
         smol.add(buttonMain);
         Cards cards = new Cards();
         JPanel big = new JPanel();

@@ -2,6 +2,7 @@ package games;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.TextArea;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
 import java.io.BufferedReader;
@@ -22,6 +23,8 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.plaf.basic.BasicArrowButton;
 
+import org.w3c.dom.Text;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,7 +38,7 @@ public class Cards {
     private Cards x;
     private JPanel panel;
     private JPanel theMother;
-    private JLabel statsArea;
+    private TextArea statsArea;
     private JButton continueahhh;
     private ArrayList<JButton> listiesofbuttonsies = new ArrayList<>();
 
@@ -54,7 +57,9 @@ public class Cards {
         panel.add(title, BorderLayout.NORTH);
 
         JPanel game = new JPanel();
-        game.setLayout(new GridLayout(2, 4, 8, 8));
+        game.setLayout(new GridLayout(3,2, 8, 8));
+        game.setMinimumSize(new Dimension(0,115));
+        game.setPreferredSize(new Dimension(0,115));
         listiesofbuttonsies.clear();
 
         int index = 0;
@@ -72,10 +77,9 @@ public class Cards {
         JPanel southPanel = new JPanel(new BorderLayout());
 
         if (this.statsArea == null) {
-            this.statsArea = new JLabel();
-            this.statsArea.setHorizontalAlignment(SwingConstants.CENTER);
+            this.statsArea = new TextArea();
         }
-        this.statsArea.setText("Memorize the cards or you shall suffers");
+        this.statsArea.setText("Memorize the cards... \n");
         southPanel.add(this.statsArea, BorderLayout.CENTER);
 
         JPanel happybuttonsies = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -117,7 +121,7 @@ public class Cards {
     }
 
     private void nextiesheehee() {
-        makeCards(8, 1, 20);
+        makeCards(6, 1, 20);
         currmessage = makeQuestion();
 
         if (theMother != null) {
@@ -138,14 +142,14 @@ public class Cards {
             bhutan.setEnabled(false);
         }
 
-        Timer timer = new Timer(10, e -> {
+        Timer timer = new Timer(10000, e -> {
             for (JButton bhutan : listiesofbuttonsies) {
                 bhutan.setText("?");
                 bhutan.setEnabled(true);
             }
             if (this.statsArea != null) {
                 this.statsArea.setText(currmessage + "\n Score: "
-                        + this.currscore + ", Streak: " + this.currstreak +"\n"+ ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak"));
+                        + this.currscore + "\n Streak: " + this.currstreak +"\n Highest Score:"+statmap.get("highest_score")+"\n Highest Streak: "+statmap.get("highest_streak"));
             }
         });
         timer.setRepeats(false);
@@ -154,8 +158,8 @@ public class Cards {
 
     public void screamOutTheStatsPlease(String whoDied) {
         if (this.statsArea != null) {
-            this.statsArea.setText(whoDied + "Score: "
-                    + this.currscore+", Streak: " + this.currstreak +"\n"+ ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak"));
+            this.statsArea.setText(whoDied + "\n Score: "
+                    + this.currscore+"\n Streak: " + this.currstreak +"\n Highest Score:"+statmap.get("highest_score")+"\n Highest Streak: "+statmap.get("highest_streak"));
         }
         if (this.continueahhh != null) {
             this.continueahhh.setEnabled(true);
@@ -285,8 +289,8 @@ public class Cards {
 
         public JButton makeButton(Cards card) {
             JButton button = new JButton(String.valueOf(this.num));
-            button.setPreferredSize(new Dimension(80, 115));
-
+            button.setMinimumSize(new Dimension(0,115));
+            button.setPreferredSize(new Dimension(0,115));
             button.addActionListener(e -> {
                 String outcome = "";
                 if (card.isCorrect(this.index)) {
