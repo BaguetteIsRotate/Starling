@@ -7,11 +7,7 @@ Many people tend to focus on the physical and mental burden that AD creates on t
 
 Since AD is incurable, patients who recieve a diagnosis are essentially receiving a death sentence. This, of course, creates an emotional burden for the patient even as their own memory begins to fade. 
 
-Starling, named after the bird behind [murmurations](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations) \[[3](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations)\], provides comfort and potential cognitive benefits to patients with AD. 
-
-Studies have shown that cognitive activities alongside physical and social activities may provide benefits for patients. \[[2](https://pubmed.ncbi.nlm.nih.gov/37600508/)\]
-
-Starling offers information and cognitive activities, which can be accessed by clicking the respective buttons as shown below:
+Starling, named after the bird behind [murmurations](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations) \[[3](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations)\], provides comfort and potential cognitive benefits to patients with AD. Studies have shown that cognitive activities alongside physical and social activities may provide benefits for patients. \[[2](https://pubmed.ncbi.nlm.nih.gov/37600508/)\] The app offers information and cognitive activities, which can be accessed by clicking the respective buttons as shown below:
 
 <img width="303" height="543" alt="Screenshot 2026-08-07 at 10 53 48 PM" src="https://github.com/user-attachments/assets/e7a2da50-5d5e-4692-a234-7fa3ae411d81" />
 
