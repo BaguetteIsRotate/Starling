@@ -138,7 +138,7 @@ public class Cards {
             bhutan.setEnabled(false);
         }
 
-        Timer timer = new Timer(10000, e -> {
+        Timer timer = new Timer(10, e -> {
             for (JButton bhutan : listiesofbuttonsies) {
                 bhutan.setText("?");
                 bhutan.setEnabled(true);
@@ -154,7 +154,7 @@ public class Cards {
 
     public void screamOutTheStatsPlease(String whoDied) {
         if (this.statsArea != null) {
-            this.statsArea.setText(whoDied + "<br>Score: "
+            this.statsArea.setText(whoDied + "Score: "
                     + this.currscore+", Streak: " + this.currstreak +"\n"+ ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak"));
         }
         if (this.continueahhh != null) {
