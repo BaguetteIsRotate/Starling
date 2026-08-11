@@ -152,7 +152,7 @@ public class Cards {
         timer.start();
     }
 
-    public void updateLiveStats(String whoDied) {
+    public void screamOutTheStatsPlease(String whoDied) {
         if (this.statsArea != null) {
             this.statsArea.setText(whoDied + "<br>Score: "
                     + this.currscore+", Streak: " + this.currstreak +"\n"+ ", Highest Score:"+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak"));
@@ -305,7 +305,7 @@ public class Cards {
                     statmap.put("highest_streak", currstreak);
                 }
                 card.save();
-                card.updateLiveStats(outcome);
+                card.screamOutTheStatsPlease(outcome);
                 if (panel != null) {
                     for (java.awt.Component comp : panel.getComponents()) {
                         if (comp instanceof JPanel) {
