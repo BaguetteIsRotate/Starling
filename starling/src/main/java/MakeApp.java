@@ -13,7 +13,8 @@ import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import games.Cards;
-
+import graphing.Graph;
+import mood.MoodTracker;
 public class MakeApp extends JFrame {
     JFrame app;
     JPanel pageMain;
@@ -112,10 +113,11 @@ public class MakeApp extends JFrame {
     }
 
     public JPanel PageOne() {
+        MoodTracker tracker = new MoodTracker();
+        JPanel graph = tracker.makePanel("mood.json");
         JPanel page = new JPanel();
         Color color = new Color(255, 248, 231);
         page.setBackground(color);
-        JLabel title = new JLabel("Exercises");
         JPanel smol = new JPanel();
         page.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         smol.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -138,7 +140,6 @@ public class MakeApp extends JFrame {
             repaint();
         });
         smol.setLayout(new BorderLayout());
-        smol.add(title, BorderLayout.NORTH);
         smol.add(buttonMain);
         Cards cards = new Cards();
         JPanel big = new JPanel();
@@ -148,9 +149,11 @@ public class MakeApp extends JFrame {
             cards.gamegamegamegame(big);
         });
         page.setLayout(new BorderLayout());
+
+        page.add(graph, BorderLayout.CENTER);
         page.add(smol, BorderLayout.NORTH);
 
-        page.add(big, BorderLayout.CENTER);
+        page.add(big, BorderLayout.SOUTH);
 
         return page;
     }

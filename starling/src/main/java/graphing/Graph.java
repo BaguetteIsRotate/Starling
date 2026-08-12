@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,7 +19,7 @@ public class Graph {
     private String title;
     private HashMap<Integer, String> xvalues;
     private HashMap<Integer, Integer> yvalues;
-    private HashMap<String, Object> map;
+    private HashMap<String, Object> map = new HashMap<>();
     private String path = "";
 
     // constructor method with input values
@@ -109,6 +110,8 @@ public class Graph {
     
     public JPanel makePanel(){
         JPanel x = new JPanel();
+        JLabel label = new JLabel("I still need to add code for generating graphs");
+        x.add(label);
         return x;
     }
 }

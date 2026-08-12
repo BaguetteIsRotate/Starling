@@ -20,6 +20,8 @@ public class MoodTracker{
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         Graph graph = new Graph("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
+        graph.addPath(path);
+        graph.save();
         JPanel visual = graph.makePanel();
         panel.add(visual,BorderLayout.NORTH);
 
@@ -34,6 +36,7 @@ public class MoodTracker{
             this.y.put(currnum, 1);
             graph.reload("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
             JPanel visual2 = graph.makePanel();
+            graph.save();
             panel.remove(visual);
             panel.add(visual2);
             panel.repaint();
@@ -43,6 +46,7 @@ public class MoodTracker{
             this.y.put(currnum, 2);
             graph.reload("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
             JPanel visual2 = graph.makePanel();
+            graph.save();
             panel.remove(visual);
             panel.add(visual2);
             panel.repaint();
@@ -52,6 +56,7 @@ public class MoodTracker{
             this.y.put(currnum, 2);
             graph.reload("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
             JPanel visual2 = graph.makePanel();
+            graph.save();
             panel.remove(visual);
             panel.add(visual2);
             panel.repaint();
@@ -61,6 +66,7 @@ public class MoodTracker{
             this.y.put(currnum, 2);
             graph.reload("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
             JPanel visual2 = graph.makePanel();
+            graph.save();
             panel.remove(visual);
             panel.add(visual2);
             panel.repaint();
@@ -70,6 +76,7 @@ public class MoodTracker{
             this.y.put(currnum, 2);
             graph.reload("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
             JPanel visual2 = graph.makePanel();
+            graph.save();
             panel.remove(visual);
             panel.add(visual2);
             panel.repaint();
