@@ -235,6 +235,7 @@ public class Cards {
                     new BufferedWriter(new FileWriter("starling/src/main/java/games/Cards.json")));
             writer.println(s);
             writer.close();
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
