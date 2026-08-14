@@ -146,7 +146,7 @@ public class MakeApp extends JFrame {
         JButton button = new JButton("Play Cards");
         big.add(button);
         button.addActionListener(e -> {
-            cards.gamegamegamegame(big);
+            cards.addGametoPanel(big);
         });
         page.setLayout(new BorderLayout());
 
