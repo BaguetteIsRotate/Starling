@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CardsStats {
-    
+    private HashMap<String, Integer> statmap = load();
     public void save() {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -31,7 +31,7 @@ public class CardsStats {
         }
     }
 
-    public HashMap<String, Integer> load() {
+    public static HashMap<String, Integer> load() {
         ObjectMapper mapper = new ObjectMapper();
         try {
             File file = new File("starling/src/main/java/games/Cards.json");
