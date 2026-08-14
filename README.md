@@ -3,7 +3,7 @@
 
 Alzheimer's disease(AD) is a neurodegenerative disease which accounts for about two-thirds of dementia cases. In 2022, it was the seventh leading cause of death in the United States. Caused by an accumulation of abnormal plaques and tangles of nerve fibers in the brain, Alzheimer's disease remains incurable. \[[1](https://www.ncbi.nlm.nih.gov/books/NBK499922/)\]
 
-Many people tend to focus on the physical and mental burden that AD creates on the patient's family or caretaker. But AD can create an emotional burden for the patient as well. It is paramount that we consider the individual who is most directly affected by the illness – the patient.
+Though much attention goes to the physical and mental burden that AD creates on the patient's family or caretaker – and rightfully so – AD can and does create an emotional burden for the patient as well. It is paramount that we consider the individual who is most directly affected by the illness.
 
 Starling, named after the bird behind [murmurations](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations) \[[3](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations)\], provides comfort and potential cognitive benefits to patients with AD. Studies have shown that cognitive activities alongside physical and social activities may provide benefits for patients. \[[2](https://pubmed.ncbi.nlm.nih.gov/37600508/)\] The app offers information and cognitive activities, which can be accessed by clicking the respective buttons as shown below:
 
