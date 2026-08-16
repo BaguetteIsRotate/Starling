@@ -68,8 +68,7 @@ public class Graph {
         this.path = path1;
     }
 
-    public void reload(String title, String xlabel, HashMap<Integer, String> xvalues, String ylabel,
-            HashMap<Integer, Integer> yvalues) {
+    public void reload(String title, String xlabel, HashMap<Integer, String> xvalues, String ylabel,HashMap<Integer, Integer> yvalues) {
         this.title = title;
         this.xlabel = xlabel;
         this.ylabel = ylabel;
@@ -110,7 +109,7 @@ public class Graph {
     
     public JPanel makePanel(){
         JPanel x = new JPanel();
-        JLabel label = new JLabel("I still need to add code for generating graphs");
+        JLabel label = new JLabel("Rate your day on a scale of 1-5!");
         x.add(label);
         return x;
     }

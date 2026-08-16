@@ -7,43 +7,35 @@ import javax.swing.JPanel;
 
 public class CardsGame {
     private Card answer;
-    private int[] cards;
+    private Card[] cards;
     private int currscore;
     private int currstreak;
     private String currmessage;
 
-    public void makeCards(int x, int lowbound, int highbound) {
-        int[] cards = new int[x];
+    public CardsGame(int numCards, int lowBound, int highBound) {
+        cards = makeCards(numCards, lowBound, highBound);
+    }
+    
+    private static int randomInt(int lowBound, int highBound) {
+        return (int) (Math.random() * (highBound - lowBound) + lowBound);
+    }
+    
+    public static Card[] makeCards(int numCards, int lowBound, int highBound) {
+        Card[] cards = new Card[numCards];
         HashSet<Integer> set = new HashSet<>();
-        for (int i = 0; i < x; i++) {
-            int t = (int) (Math.random() * (highbound - lowbound) + lowbound);
+        for (int i = 0; i < numCards; i++) {
+            int t = randomInt(lowBound, highBound);
             while (set.contains(t)) {
-                t = (int) (Math.random() * (highbound - lowbound) + lowbound);
+                t = randomInt(lowBound, highBound);
             }
             set.add(t);
-            cards[i] = t;
+            cards[i] = new Card(t, i);
         }
-        this.cards = cards;
+        return cards;
     }
 
     public boolean isCorrect(int c) {
-        Card card = new Card(answer.getNum(), c);
-        if (answer.getIndex() == card.getIndex()) {
-            currscore = currscore + 5;
-            currstreak += 1;
-            if (this.currstreak > 0) {
-                currscore = currscore + 5 * this.currstreak;
-            }
-            return true;
-        } else {
-            if (currstreak > 0) {
-                currstreak = 0;
-                currscore = currscore - 5;
-            } else {
-                currscore -= 10;
-            }
-            return false;
-        }
+        return c == answer.getIndex();
     }
 
     public int getScore() {
@@ -54,20 +46,26 @@ public class CardsGame {
         return this.currstreak;
     }
 
-    public String printStat() {
-        return "Score: " + this.currscore + ", Streak: " + this.currstreak+", High Score: "+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak");
+    // public String printStat() {
+    //     return "Score: " + this.currscore + ", Streak: " + this.currstreak+", High Score: "+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak");
+    // }
+
+    public int makeQuestion() {
+        int t = randomInt(0, this.cards.length);
+        return t;
     }
 
-    public String makeQuestion() {
-        int t = (int) (Math.random() * (this.cards.length - 1));
-        this.answer = new Card(this.cards[t], t);
-        return "Which card had the number " + this.cards[t] + "?";
-    }
-    public int[] getCards() {
+    // public String makeQuestion() {
+    //     int t = (int) (Math.random() * (this.cards.length - 1));
+    //     this.answer = new Card(this.cards[t], t);
+    //     return "Which card had the number " + this.cards[t] + "?";
+    // }
+
+    public Card[] getCards() {
         return this.cards;
     }
 
-    public class Card {
+    public static class Card {
         private int num;
         private int index;
 

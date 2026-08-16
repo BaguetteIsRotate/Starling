@@ -12,7 +12,8 @@ import javax.swing.*;
 import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import games.Cards;
+import games.CardsGame;
+import games.CardsUI;
 import graphing.Graph;
 import mood.MoodTracker;
 public class MakeApp extends JFrame {
@@ -141,7 +142,7 @@ public class MakeApp extends JFrame {
         });
         smol.setLayout(new BorderLayout());
         smol.add(buttonMain);
-        Cards cards = new Cards();
+        CardsUI cards = new CardsUI();
         JPanel big = new JPanel();
         JButton button = new JButton("Play Cards");
         big.add(button);
@@ -320,7 +321,7 @@ public class MakeApp extends JFrame {
             reader.close();
 
         } catch (Exception e) {
-            text.setText("oh no the file aint reading");
+            text.setText("File not found");
         }
         text.setEditable(false);
         text.setWrapStyleWord(true);
