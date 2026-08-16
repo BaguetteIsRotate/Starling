@@ -1,86 +1,47 @@
 package mood;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
 import graphing.Graph;
 
 public class MoodTracker{
     private HashMap<Integer, String> x;
     private HashMap<Integer, Integer> y;
     private int currnum;
+    private Graph graph;
+    private JPanel panel;
+    private JPanel visual;
+    public MoodTracker(){
+        this.x = new HashMap<Integer,String>();
+        this.y = new HashMap<Integer, Integer>();
+        this.currnum = 0;
+    }
     public JPanel makePanel(String path){
-        LocalDate time = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd, yyyy");
-        time.format(formatter);
-        JPanel panel = new JPanel();
+        currnum=0;
+        panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        Graph graph = new Graph("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
+        graph = new Graph("Mood over Time", "Date",this.x,"Mood",this.y);
         graph.addPath(path);
         graph.save();
-        JPanel visual = graph.makePanel();
+        visual = graph.makePanel();
         panel.add(visual,BorderLayout.NORTH);
 
-        JButton button1 = new JButton("1");
-        JButton button2 = new JButton("2");
-        JButton button3 = new JButton("3");
-        JButton button4 = new JButton("4");
-        JButton button5 = new JButton("5");
+        JButton button1 = makeButton(1);
+        JButton button2 = makeButton(2);
+        JButton button3 = makeButton(3);
+        JButton button4 = makeButton(4);
+        JButton button5 = makeButton(5);
 
-        button1.addActionListener(e -> {
-            this.x.put(currnum, time.toString());
-            this.y.put(currnum, 1);
-            graph.reload("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
-            JPanel visual2 = graph.makePanel();
-            graph.save();
-            panel.remove(visual);
-            panel.add(visual2);
-            panel.repaint();
-        });
-        button2.addActionListener(e->{
-            this.x.put(currnum, time.toString());
-            this.y.put(currnum, 2);
-            graph.reload("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
-            JPanel visual2 = graph.makePanel();
-            graph.save();
-            panel.remove(visual);
-            panel.add(visual2);
-            panel.repaint();
-        });
-        button3.addActionListener(e->{
-            this.x.put(currnum, time.toString());
-            this.y.put(currnum, 2);
-            graph.reload("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
-            JPanel visual2 = graph.makePanel();
-            graph.save();
-            panel.remove(visual);
-            panel.add(visual2);
-            panel.repaint();
-        });
-        button4.addActionListener(e->{
-            this.x.put(currnum, time.toString());
-            this.y.put(currnum, 2);
-            graph.reload("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
-            JPanel visual2 = graph.makePanel();
-            graph.save();
-            panel.remove(visual);
-            panel.add(visual2);
-            panel.repaint();
-        });
-        button5.addActionListener(e->{
-            this.x.put(currnum, time.toString());
-            this.y.put(currnum, 2);
-            graph.reload("Mood over Time", "Date (mm/dd, yyyy)",this.x,"Mood",this.y);
-            JPanel visual2 = graph.makePanel();
-            graph.save();
-            panel.remove(visual);
-            panel.add(visual2);
-            panel.repaint();
-        });
+        /***************************************************************************** */
+        //IIIIMMMMMPOOOOORRRRTTTTTTAAAANNNNNNNTTTTTTSSSSSSSIIIIIIEEEEEEESSSSSSSSSSSSSSSSS
+        //turn the following actionl listeners into one function!!!!!!!!!!!!!!!!!!!!!!!!!
+        /***************************************************************************** */
 
         JPanel small = new JPanel();
         small.setLayout(new GridLayout(1,5));
@@ -91,5 +52,24 @@ public class MoodTracker{
         small.add(button5);
         panel.add(small, BorderLayout.SOUTH);
         return panel;
+    }
+    public JButton makeButton(int x){
+        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
+        JButton button = new JButton(x+"");
+        button.addActionListener(e -> {
+            ZonedDateTime time = ZonedDateTime.now();
+            time.format(formatter);
+            this.x.put(currnum, time.toString());
+            this.y.put(currnum, x);
+            graph.loadDataFromPath();
+            graph.reload("Mood over Time", "Date",this.x,"Mood",this.y);
+            graph.save("starling/src/main/java/mood.json");
+            JPanel visual2 = graph.makePanel();
+            panel.remove(visual);
+            panel.add(visual2);
+            panel.repaint();
+            currnum+=1;
+        });
+        return button;
     }
 }

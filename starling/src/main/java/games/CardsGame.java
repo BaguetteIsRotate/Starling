@@ -20,7 +20,7 @@ public class CardsGame {
         return (int) (Math.random() * (highBound - lowBound) + lowBound);
     }
     
-    private static Card[] makeCards(int numCards, int lowBound, int highBound) {
+    public static Card[] makeCards(int numCards, int lowBound, int highBound) {
         Card[] cards = new Card[numCards];
         HashSet<Integer> set = new HashSet<>();
         for (int i = 0; i < numCards; i++) {
@@ -50,7 +50,7 @@ public class CardsGame {
     //     return "Score: " + this.currscore + ", Streak: " + this.currstreak+", High Score: "+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak");
     // }
 
-    public int startQuestion() {
+    public int makeQuestion() {
         int t = randomInt(0, this.cards.length);
         return t;
     }

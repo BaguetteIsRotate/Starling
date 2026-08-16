@@ -1,4 +1,5 @@
-import games.Cards;
+import games.CardsUI;
+import games.CardsGame;
 import graphing.Graph;
 import mood.MoodTracker;
 import javax.swing.SwingUtilities;

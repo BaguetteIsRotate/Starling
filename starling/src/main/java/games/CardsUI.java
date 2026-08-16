@@ -22,15 +22,18 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
+import games.CardsGame.Card;
+
 public class CardsUI {
     private JPanel panel;
     private JPanel theMother;
     private TextArea statsArea;
     private JButton continueahhh;
     private int currscore;
+    private Card[] cards;
     private int currstreak;
     private String currmessage;
-    private Cards x;
+    private CardsUI x;
     private HashMap<String, Integer> statmap = CardsStats.load();
     private ArrayList<JButton> listiesOfButtonsies = new ArrayList<>();
 /**
@@ -41,16 +44,8 @@ public class CardsUI {
         makeJPanel(currstreak, currscore, cards, currmessage, x);
         return panel;
     }
-/**
- * Makes a JPanel
- * @param curr_score the current score
- * @param number the number of cards
- * @param cards the array of cards
- * @param message the message to display
- * @param card a Cards object
- * @return a JPanel object containing the game UI
- */
-    private JPanel makeJPanel(int curr_score, int number, int[] cards, String message, Cards card) {
+
+    private JPanel makeJPanel(int curr_score, int number, Card[] cards, String message, CardsUI card) {
         // make main JPanel
         this.panel = new JPanel();
         this.panel.setLayout(new BorderLayout());
@@ -130,14 +125,15 @@ public class CardsUI {
     }
 
     private void updatePanel() {
-        makeCards(6, 1, 20);
-        currmessage = makeQuestion();
+        CardsGame g = new CardsGame(6, 1, 20);
+        CardsGame.makeCards(6, 1, 20);
+        currmessage = "Which card had the number " + g.getCards()[g.makeQuestion()].getNum() + "?";
 
         if (theMother != null) {
             if (this.panel != null) {
                 theMother.remove(this.panel);
             }
-            this.panel = makeJPanel(currstreak, currscore, getCards(), currmessage, this);
+            this.panel = makeJPanel(currstreak, currscore, g.getCards(), currmessage, this);
             theMother.add(this.panel);
             theMother.revalidate();
             theMother.repaint();

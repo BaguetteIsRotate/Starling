@@ -68,8 +68,7 @@ public class Graph {
         this.path = path1;
     }
 
-    public void reload(String title, String xlabel, HashMap<Integer, String> xvalues, String ylabel,
-            HashMap<Integer, Integer> yvalues) {
+    public void reload(String title, String xlabel, HashMap<Integer, String> xvalues, String ylabel,HashMap<Integer, Integer> yvalues) {
         this.title = title;
         this.xlabel = xlabel;
         this.ylabel = ylabel;
