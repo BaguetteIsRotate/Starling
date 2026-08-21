@@ -10,7 +10,5 @@ public class Starling {
             MakeApp happy = new MakeApp();
             happy.setVisible(true);
         });
-        // Cards card = new Cards();
-        // card.playgame();
     }
 }

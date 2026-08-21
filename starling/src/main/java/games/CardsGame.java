@@ -15,11 +15,11 @@ public class CardsGame {
     public CardsGame(int numCards, int lowBound, int highBound) {
         cards = makeCards(numCards, lowBound, highBound);
     }
-    
+
     private static int randomInt(int lowBound, int highBound) {
         return (int) (Math.random() * (highBound - lowBound) + lowBound);
     }
-    
+
     public static Card[] makeCards(int numCards, int lowBound, int highBound) {
         Card[] cards = new Card[numCards];
         HashSet<Integer> set = new HashSet<>();
@@ -47,7 +47,9 @@ public class CardsGame {
     }
 
     // public String printStat() {
-    //     return "Score: " + this.currscore + ", Streak: " + this.currstreak+", High Score: "+statmap.get("highest_score")+", Highest Streak: "+statmap.get("highest_streak");
+    // return "Score: " + this.currscore + ", Streak: " + this.currstreak+", High
+    // Score: "+statmap.get("highest_score")+", Highest Streak:
+    // "+statmap.get("highest_streak");
     // }
 
     public int makeQuestion() {
@@ -56,9 +58,9 @@ public class CardsGame {
     }
 
     // public String makeQuestion() {
-    //     int t = (int) (Math.random() * (this.cards.length - 1));
-    //     this.answer = new Card(this.cards[t], t);
-    //     return "Which card had the number " + this.cards[t] + "?";
+    // int t = (int) (Math.random() * (this.cards.length - 1));
+    // this.answer = new Card(this.cards[t], t);
+    // return "Which card had the number " + this.cards[t] + "?";
     // }
 
     public Card[] getCards() {

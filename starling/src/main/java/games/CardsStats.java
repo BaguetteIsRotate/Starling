@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CardsStats {
     private HashMap<String, Integer> statmap = load();
+
     public void save() {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -25,7 +26,7 @@ public class CardsStats {
                     new BufferedWriter(new FileWriter("starling/src/main/java/games/Cards.json")));
             writer.println(s);
             writer.close();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
