@@ -14,7 +14,7 @@ Here is a silent video tour of the current UI. Note that on the Info page, the b
 
 https://github.com/user-attachments/assets/a5f9773b-36f7-42ec-889b-50005bc870cd
 
-Starling prioritizes a simple, easy-to-use UI with large buttons to accommodate Alzheimer's patients. 
+Starling prioritizes a simple, easy-to-use UI with large buttons to accommodate Alzheimer's patients. The background color is Cosmic Latte (hex: #FFF8E7), which astronomers at Johns Hopkins University found in 2002 by mixing the light of more than 200,000 galaxies, thus earning it the title "the average color of the universe". This color was chosen since stars represent hope and guidance.
 
 References: 
 1.  Lui F, Tsao JW. Alzheimer Disease. ncbibooksFebruary 12, 2024. Accessed August 7, 2026. [https://www.ncbi.nlm.nih.gov/books/NBK499922/](https://www.ncbi.nlm.nih.gov/books/NBK499922/)
