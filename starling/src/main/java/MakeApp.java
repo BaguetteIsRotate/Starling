@@ -39,9 +39,9 @@ public class MakeApp extends JFrame {
         pageTwo = PageTwo();
         pageMain = PageMain();
         pageInfoA = PageInfoA("starling/src/main/java/text1.txt", "What is Alzheimer's Disease?");
-        pageInfoB = PageInfoA("starling/src/main/java/text2.txt", "What is Alzheimer's Disease?");
-        pageInfoC = PageInfoA("starling/src/main/java/text3.txt", "What is Alzheimer's Disease?");
-        pageInfoD = PageInfoA("starling/src/main/java/text4.txt", "What is Alzheimer's Disease?");
+        pageInfoB = PageInfoA("starling/src/main/java/text2.txt", "Onset and Early Symptoms of Alzheimer's");
+        pageInfoC = PageInfoA("starling/src/main/java/text3.txt", "Middle-Stage Alzheimer's and Late-Stage ALzheimers");
+        pageInfoD = PageInfoA("starling/src/main/java/text4.txt", "Preventative measures against Alzheimer's symptons");
         add(pageMain);
         revalidate();
     }
