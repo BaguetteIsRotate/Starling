@@ -16,6 +16,7 @@ import games.CardsGame;
 import games.CardsUI;
 import graphing.Graph;
 import mood.MoodTracker;
+
 public class MakeApp extends JFrame {
     JFrame app;
     JPanel pageMain;
@@ -39,9 +40,9 @@ public class MakeApp extends JFrame {
         pageTwo = PageTwo();
         pageMain = PageMain();
         pageInfoA = PageInfoA("starling/src/main/java/text1.txt", "What is Alzheimer's Disease?");
-        pageInfoB = PageInfoA("starling/src/main/java/text2.txt", "What is Alzheimer's Disease?");
-        pageInfoC = PageInfoA("starling/src/main/java/text3.txt", "What is Alzheimer's Disease?");
-        pageInfoD = PageInfoA("starling/src/main/java/text4.txt", "What is Alzheimer's Disease?");
+        pageInfoB = PageInfoA("starling/src/main/java/text2.txt", "Onset and Early Symptoms of Alzheimer's");
+        pageInfoC = PageInfoA("starling/src/main/java/text3.txt", "Middle-Stage Alzheimer's and Late-Stage ALzheimers");
+        pageInfoD = PageInfoA("starling/src/main/java/text4.txt", "Preventative measures against Alzheimer's symptons");
         add(pageMain);
         revalidate();
     }
@@ -54,32 +55,30 @@ public class MakeApp extends JFrame {
         smol.setBackground(color);
         page.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         smol.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        ImageIcon title = resizeImageIcon("starling/src/main/images/app_title.png", 100, page.getWidth() / 2);
+        JPanel top = new JPanel();
+        top.setLayout(new BorderLayout());
+        ImageIcon title = resizeImageIcon("starling/src/main/images/app_title.png", 90, page.getWidth()/3);
         JLabel pondering = new JLabel(title);
-        pondering.setSize(200, 100);
+        pondering.setSize(150, 75);
+        pondering.setBackground(color);
+        JPanel top1 = new JPanel();
         JLabel pondering2 = new JLabel("An app for Alzheimer's patients");
         smol.setLayout(new GridLayout(2, 1));
         page.setLayout(new BorderLayout());
-        page.add(pondering, BorderLayout.NORTH);
         pondering.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton button1 = new JButton();
-        button1.setSize(200, 100);
+        JButton button1 = makeButton("starling/src/main/images/happy_icon.png", 200, 100, 50, page.getWidth()/4, page);
         smol.add(button1);
-        ImageIcon icon2 = resizeImageIcon("starling/src/main/images/happy_icon.png", 50, button1.getWidth() / 4);
-        button1.setIcon(icon2);
+        top.setBackground(color);
 
-        JButton button2 = new JButton();
-        smol.add(button2);
-        button2.setSize(200, 100);
-        ImageIcon icon = resizeImageIcon("starling/src/main/images/info_icon.png", 50, button2.getWidth() / 4);
-        button2.setIcon(icon);
-        button1.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                ImageIcon icon = resizeImageIcon("starling/src/main/images/happy_icon.png", (button1.getHeight() / 4),
-                        button1.getWidth() / 4);
-                button1.setIcon(icon);
-            }
-        });
+        JPanel top2 = new JPanel();
+        top1.setBackground(color);
+        top2.setBackground(color);
+        
+        JButton button2 = makeButton("starling/src/main/images/info_icon.png", 50, 50, 50, page.getWidth()/4, page);
+        top2.add(button2);
+        top.add(top2,BorderLayout.WEST);
+        top1.add(pondering);
+        top.add(top1, BorderLayout.CENTER);
         button1.addActionListener(e -> {
             remove(pageMain);
             add(pageOne);
@@ -87,18 +86,12 @@ public class MakeApp extends JFrame {
             repaint();
         });
 
+        page.add(top, BorderLayout.NORTH);
         pondering.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 ImageIcon title1 = resizeImageIcon("starling/src/main/images/app_title.png",
-                        (MakeApp.this.getHeight() / 2), MakeApp.this.getWidth());
+                        (page.getHeight() / 7), page.getWidth()/2);
                 pondering.setIcon(title1);
-            }
-        });
-        button2.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                ImageIcon icon = resizeImageIcon("starling/src/main/images/info_icon.png", (button2.getHeight() / 4),
-                        button2.getWidth() / 4);
-                button2.setIcon(icon);
             }
         });
         button2.addActionListener(e -> {
@@ -112,7 +105,20 @@ public class MakeApp extends JFrame {
         pondering2.setHorizontalAlignment(SwingConstants.CENTER);
         return page;
     }
-
+    public JButton makeButton(String iconPath, int x, int y, int imgx, int imgy, JPanel page){
+        JButton button = new JButton();
+        button.setPreferredSize(new Dimension(x, y));
+        ImageIcon icon = resizeImageIcon(iconPath, imgy, imgx);
+        button.setIcon(icon);
+        button.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                ImageIcon icon = resizeImageIcon(iconPath, (button.getHeight() / 4),
+                        button.getWidth() / 4);
+                button.setIcon(icon);
+            }
+        });
+        return button;
+    }
     public JPanel PageOne() {
         MoodTracker tracker = new MoodTracker();
         JPanel graph = tracker.makePanel("mood.json");
