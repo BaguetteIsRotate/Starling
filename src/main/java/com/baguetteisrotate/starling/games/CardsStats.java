@@ -16,14 +16,14 @@ public class CardsStats {
     public void save() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            File file = new File("starling/src/main/java/games/Cards.json");
+            File file = new File("Cards.json");
             TypeReference<HashMap<String, HashMap<String, Integer>>> typeRef = new TypeReference<HashMap<String, HashMap<String, Integer>>>() {
             };
             HashMap<String, HashMap<String, Integer>> map = mapper.readValue(file, typeRef);
             map.put("cards", statmap);
             String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
             PrintWriter writer = new PrintWriter(
-                    new BufferedWriter(new FileWriter("starling/src/main/java/games/Cards.json")));
+                    new BufferedWriter(new FileWriter("Cards.json")));
             writer.println(s);
             writer.close();
 
@@ -35,7 +35,7 @@ public class CardsStats {
     public static HashMap<String, Integer> load() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            File file = new File("starling/src/main/java/games/Cards.json");
+            File file = new File("Cards.json");
             TypeReference<HashMap<String, HashMap<String, Integer>>> typeRef = new TypeReference<HashMap<String, HashMap<String, Integer>>>() {
             };
             HashMap<String, HashMap<String, Integer>> map = mapper.readValue(file, typeRef);
