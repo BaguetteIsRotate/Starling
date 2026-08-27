@@ -147,8 +147,6 @@ public class MakeApp extends JFrame {
     }
 
     public JPanel PageOne() {
-        MoodTracker tracker = new MoodTracker();
-        JPanel graph = tracker.makePanel("mood.json", false);
         JPanel page = new JPanel();
         Color color = new Color(255, 248, 231);
         page.setBackground(color);
@@ -184,7 +182,6 @@ public class MakeApp extends JFrame {
         });
         page.setLayout(new BorderLayout());
 
-        page.add(graph, BorderLayout.CENTER);
         page.add(smol, BorderLayout.NORTH);
 
         page.add(big, BorderLayout.SOUTH);
