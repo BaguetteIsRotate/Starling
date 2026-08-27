@@ -188,7 +188,7 @@ public class MakeApp extends JFrame {
 
         page.add(smol, BorderLayout.NORTH);
 
-        page.add(big, BorderLayout.SOUTH);
+        page.add(big, BorderLayout.CENTER);
 
         return page;
     }
