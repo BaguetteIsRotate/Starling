@@ -1,4 +1,4 @@
-package games;
+package com.baguetteisrotate.starling.games;
 
 import java.util.HashSet;
 

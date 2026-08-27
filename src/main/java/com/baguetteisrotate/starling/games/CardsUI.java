@@ -1,4 +1,4 @@
-package games;
+package com.baguetteisrotate.starling.games;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
-import games.CardsGame.Card;
+import com.baguetteisrotate.starling.games.CardsGame.Card;
 
 public class CardsUI {
     private JPanel panel;
