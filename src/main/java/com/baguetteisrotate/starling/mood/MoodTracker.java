@@ -63,7 +63,7 @@ public class MoodTracker {
             this.y.put(currnum, x);
             graph.loadDataFromPath();
             graph.reload("Mood over Time", "Date", this.x, "Mood", this.y);
-            graph.save("starling/src/main/java/mood.json");
+            graph.save("mood.json");
             if (showGraph) {
                 JPanel visual2 = graph.makePanel(showGraph);
                 panel.remove(visual);
