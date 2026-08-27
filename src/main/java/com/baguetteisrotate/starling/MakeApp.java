@@ -44,10 +44,14 @@ public class MakeApp extends JFrame {
         pageThree = PageThree();
         pageFour = PageFour();
         pageMain = PageMain();
-        pageInfoA = PageInfo("/text/text1.txt", "What is Alzheimer's Disease?",pageInfoA);
-        pageInfoB = PageInfo("/text/text2.txt", "Onset and Early Symptoms of Alzheimer's",pageInfoB);
-        pageInfoC = PageInfo("/text/text3.txt", "Middle-Stage Alzheimer's and Late-Stage ALzheimers",pageInfoC);
-        pageInfoD = PageInfo("/text/text4.txt", "Preventative measures against Alzheimer's symptons", pageInfoD);
+        JPanel page = new JPanel();
+        pageInfoA = PageInfo("/text/text1.txt", "What is Alzheimer's Disease?",page);
+        JPanel page2 = new JPanel();
+        pageInfoB = PageInfo("/text/text2.txt", "Onset and Early Symptoms of Alzheimer's",page2);
+        JPanel page3 = new JPanel();
+        pageInfoC = PageInfo("/text/text3.txt", "Middle-Stage Alzheimer's and Late-Stage ALzheimers",page3);
+        JPanel page4 = new JPanel();
+        pageInfoD = PageInfo("/text/text4.txt", "Preventative measures against Alzheimer's symptons", page4);
         add(pageMain);
         revalidate();
     }
