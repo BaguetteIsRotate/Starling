@@ -44,10 +44,10 @@ public class MakeApp extends JFrame {
         pageThree = PageThree();
         pageFour = PageFour();
         pageMain = PageMain();
-        pageInfoA = PageInfoA("/text/text1.txt", "What is Alzheimer's Disease?");
-        pageInfoB = PageInfoA("/text/text2.txt", "Onset and Early Symptoms of Alzheimer's");
-        pageInfoC = PageInfoA("/text/text3.txt", "Middle-Stage Alzheimer's and Late-Stage ALzheimers");
-        pageInfoD = PageInfoA("/text/text4.txt", "Preventative measures against Alzheimer's symptons");
+        pageInfoA = PageInfo("/text/text1.txt", "What is Alzheimer's Disease?",pageInfoA);
+        pageInfoB = PageInfo("/text/text2.txt", "Onset and Early Symptoms of Alzheimer's",pageInfoB);
+        pageInfoC = PageInfo("/text/text3.txt", "Middle-Stage Alzheimer's and Late-Stage ALzheimers",pageInfoC);
+        pageInfoD = PageInfo("/text/text4.txt", "Preventative measures against Alzheimer's symptons", pageInfoD);
         add(pageMain);
         revalidate();
     }
@@ -346,8 +346,7 @@ public class MakeApp extends JFrame {
         return page;
     }
 
-    public JPanel PageInfoA(String path, String title) {
-        JPanel page = new JPanel();
+    public JPanel PageInfo(String path, String title, JPanel page) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         Color color = new Color(255, 248, 231);
         page.setBackground(color);
@@ -377,7 +376,7 @@ public class MakeApp extends JFrame {
             }
         });
         buttonMain.addActionListener(e -> {
-            remove(pageInfoA);
+            remove(page);
             add(pageMain);
             revalidate();
             repaint();
@@ -396,7 +395,7 @@ public class MakeApp extends JFrame {
             }
         });
         button2.addActionListener(e -> {
-            remove(pageInfoA);
+            remove(page);
             add(pageTwo);
             revalidate();
             repaint();

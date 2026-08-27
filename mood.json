@@ -1,1 +1,7 @@
-{}
+{
+  "yval" : { },
+  "xval" : { },
+  "ylabel" : "Mood",
+  "xlabel" : "Date",
+  "title" : "Mood over Time"
+}
