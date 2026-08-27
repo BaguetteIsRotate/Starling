@@ -1,4 +1,5 @@
 
+
 <img width="567.5" height="223.5" alt="app_title" src="https://github.com/user-attachments/assets/cb5ee6ee-1a9c-41f8-aca5-c71c772a0a65" />
 
 Alzheimer's disease(AD) is a neurodegenerative disease which accounts for about two-thirds of dementia cases. In 2022, it was the seventh leading cause of death in the United States. Caused by an accumulation of abnormal plaques and tangles of nerve fibers in the brain, Alzheimer's disease remains incurable. \[[1](https://www.ncbi.nlm.nih.gov/books/NBK499922/)\]
@@ -7,12 +8,9 @@ Though much attention goes to the physical and mental burden that AD creates on 
 
 Starling, named after the bird behind [murmurations](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations) \[[3](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations)\], provides comfort and potential cognitive benefits to patients with AD. Studies have shown that cognitive activities alongside physical and social activities may provide benefits for patients. \[[2](https://pubmed.ncbi.nlm.nih.gov/37600508/)\] The app offers information and cognitive activities, which can be accessed by clicking the respective buttons as shown below:
 
-<img width="303" height="543" alt="Screenshot 2026-08-07 at 10 53 48 PM" src="https://github.com/user-attachments/assets/e7a2da50-5d5e-4692-a234-7fa3ae411d81" />
-
 Here is a silent video tour of the current UI. Note that on the Info page, the buttons labeled "B", "C", and "D" do not actually lead to articles yet; they still have to be written.
 
-
-https://github.com/user-attachments/assets/a5f9773b-36f7-42ec-889b-50005bc870cd
+https://github.com/user-attachments/assets/64629200-833c-42c5-8421-344b9f78c06f
 
 Starling prioritizes a simple, easy-to-use UI with large buttons to accommodate Alzheimer's patients. The background color is Cosmic Latte (hex: #FFF8E7), which astronomers at Johns Hopkins University found in 2002 by mixing the light of more than 200,000 galaxies, thus earning it the title "the average color of the universe". This color was chosen since stars represent hope and guidance.
 
