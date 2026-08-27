@@ -1,7 +1,5 @@
-import games.CardsUI;
-import games.CardsGame;
-import graphing.Graph;
-import mood.MoodTracker;
+package com.baguetteisrotate.starling;
+
 import javax.swing.SwingUtilities;
 
 public class Starling {

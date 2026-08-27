@@ -1,4 +1,4 @@
-package graphing;
+package com.baguetteisrotate.starling.graphing;
 
 import java.io.BufferedWriter;
 import java.io.File;

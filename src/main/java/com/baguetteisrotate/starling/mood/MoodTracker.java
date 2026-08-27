@@ -1,4 +1,4 @@
-package mood;
+package com.baguetteisrotate.starling.mood;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import graphing.Graph;
+import com.baguetteisrotate.starling.graphing.Graph;
 
 public class MoodTracker {
     private HashMap<Integer, String> x;
