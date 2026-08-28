@@ -11,19 +11,21 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CardsStats {
-    private HashMap<String, Integer> statmap = load();
-
+    private HashMap<String, Integer> statmap;
+    public void set(HashMap<String,Integer> map){
+        statmap=map;
+    }
     public void save() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            File file = new File("Cards.json");
+            File file = new File("cards.json");
             TypeReference<HashMap<String, HashMap<String, Integer>>> typeRef = new TypeReference<HashMap<String, HashMap<String, Integer>>>() {
             };
             HashMap<String, HashMap<String, Integer>> map = mapper.readValue(file, typeRef);
             map.put("cards", statmap);
             String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
             PrintWriter writer = new PrintWriter(
-                    new BufferedWriter(new FileWriter("Cards.json")));
+                    new BufferedWriter(new FileWriter("cards.json")));
             writer.println(s);
             writer.close();
 
@@ -35,7 +37,7 @@ public class CardsStats {
     public static HashMap<String, Integer> load() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            File file = new File("Cards.json");
+            File file = new File("cards.json");
             TypeReference<HashMap<String, HashMap<String, Integer>>> typeRef = new TypeReference<HashMap<String, HashMap<String, Integer>>>() {
             };
             HashMap<String, HashMap<String, Integer>> map = mapper.readValue(file, typeRef);

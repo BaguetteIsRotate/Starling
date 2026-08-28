@@ -36,10 +36,12 @@ public class CardsUI {
     private CardsUI x;
     private HashMap<String, Integer> statmap = CardsStats.load();
     private ArrayList<JButton> listiesOfButtonsies = new ArrayList<>();
-/**
- * 
- * @return
- */
+    private CardsGame currentGame;
+
+    /**
+     * 
+     * @return
+     */
     public JPanel getPanel() {
         makeJPanel(currstreak, currscore, cards, currmessage, x);
         return panel;
@@ -59,21 +61,21 @@ public class CardsUI {
 
         // make game JPanel
         JPanel game = new JPanel();
-        game.setLayout(new GridLayout(3,2, 8, 8));
-        game.setMinimumSize(new Dimension(0,115));
-        game.setPreferredSize(new Dimension(0,115));
+        game.setLayout(new GridLayout(3, 2, 8, 8));
+        game.setMinimumSize(new Dimension(0, 115));
+        game.setPreferredSize(new Dimension(0, 115));
         panel.add(game, BorderLayout.CENTER);
 
         // initialize buttons
         listiesOfButtonsies.clear();
-        CardsGame currentGame = new CardsGame(6, 1, 20);
+        currentGame = new CardsGame(6, 1, 20);
         CardsGame.Card[] cards2 = currentGame.getCards();
         for (CardsGame.Card c : cards2) {
             JButton button = makeButton(c);
             listiesOfButtonsies.add(button);
             game.add(button);
         }
-        
+
         // make stat JPanel
         JPanel panelsiesOfButtonsies = new JPanel(new BorderLayout());
 
@@ -84,17 +86,18 @@ public class CardsUI {
         panelsiesOfButtonsies.add(this.statsArea, BorderLayout.CENTER);
 
         JPanel happybuttonsies = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        this.continueahhh = new JButton("I WISH TO CONTINUE :D");
+        this.continueahhh = new JButton("Next Round");
         this.continueahhh.setEnabled(false);
         this.continueahhh.addActionListener(e -> {
             updatePanel();
         });
 
-        JButton buttonofDeatttthhhh = new JButton("KILL GAME");
+        JButton buttonofDeatttthhhh = new JButton("End Current Game");
         buttonofDeatttthhhh.addActionListener(e -> {
             if (theMother != null) {
                 theMother.removeAll();
-                JButton button = new JButton("PLAY CARDS!!!");
+                JButton button = new JButton("Play Cards");
+                button.setPreferredSize(new Dimension(100, 100));
                 button.addActionListener(f -> {
                     addGametoPanel(this.theMother);
                 });
@@ -108,13 +111,15 @@ public class CardsUI {
         happybuttonsies.add(buttonofDeatttthhhh);
         panelsiesOfButtonsies.add(happybuttonsies, BorderLayout.SOUTH);
         panel.add(panelsiesOfButtonsies, BorderLayout.SOUTH);
-        
+
         return panel;
     }
-/**
- * Adds the game to a given JPanel and initializes the game.
- * @param panel2 the JPanel which the game is adde to
- */
+
+    /**
+     * Adds the game to a given JPanel and initializes the game.
+     * 
+     * @param panel2 the JPanel which the game is adde to
+     */
     public void addGametoPanel(JPanel panel2) {
         this.theMother = panel2;
         this.x = this.x;
@@ -127,7 +132,7 @@ public class CardsUI {
     private void updatePanel() {
         CardsGame g = new CardsGame(6, 1, 20);
         CardsGame.makeCards(6, 1, 20);
-        currmessage = "Which card had the number " + g.getCards()[g.makeQuestion()].getNum() + "?";
+        currmessage = "Which card had the number " + g.makeQuestion() + "?";
 
         if (theMother != null) {
             if (this.panel != null) {
@@ -177,39 +182,41 @@ public class CardsUI {
         JButton button = new JButton(String.valueOf(card.getNum()));
         button.setMinimumSize(new Dimension(0, 115));
         button.setPreferredSize(new Dimension(0, 115));
-        // button.addActionListener(e -> {
-        // String outcome = "";
-        // if (card.isCorrect(this.index)) {
-        // outcome = "Correct! ";
-        // statmap.put("total_wins", statmap.get("total_wins") + 1);
-        // } else {
-        // outcome = "Incorrect! ";
-        // }
-        // button.setText(String.valueOf(this.num));
-        // if (currscore > statmap.get("highest_score")) {
-        // statmap.put("highest_score", currscore);
-        // }
-        // statmap.put("curr_score", currscore);
-        // statmap.put("curr_streak", currstreak);
-        // if (statmap.get("highest_streak") < currstreak) {
-        // statmap.put("highest_streak", currstreak);
-        // }
-        // card.save();
-        // card.screamOutTheStatsPlease(outcome);
-        // if (panel != null) {
-        // for (java.awt.Component comp : panel.getComponents()) {
-        // if (comp instanceof JPanel) {
-        // for (java.awt.Component internalComp : ((JPanel) comp).getComponents()) {
-        // if (internalComp instanceof JButton
-        // && !"Continue".equals(((JButton) internalComp).getText())
-        // && !"End Current Game".equals(((JButton) internalComp).getText())) {
-        // internalComp.setEnabled(false);
-        // }
-        // }
-        // }
-        // }
-        // }
-        // });
+        button.addActionListener(e -> {
+            String outcome = "";
+            if (currentGame.isCorrect(card)) {
+                outcome = "Correct! ";
+                statmap.put("total_wins", statmap.get("total_wins") + 1);
+            } else {
+                outcome = "Incorrect! ";
+            }
+            button.setText(String.valueOf(card.getNum()));
+            if (currscore > statmap.get("highest_score")) {
+                statmap.put("highest_score", currscore);
+            }
+            statmap.put("curr_score", currscore);
+            statmap.put("curr_streak", currstreak);
+            if (statmap.get("highest_streak") < currstreak) {
+                statmap.put("highest_streak", currstreak);
+            }
+            CardsStats stats = new CardsStats();
+            stats.set(statmap);
+            stats.save();
+            screamOutTheStatsPlease(outcome);
+            if (panel != null) {
+                for (java.awt.Component comp : panel.getComponents()) {
+                    if (comp instanceof JPanel) {
+                        for (java.awt.Component internalComp : ((JPanel) comp).getComponents()) {
+                            if (internalComp instanceof JButton
+                                    && !"Continue".equals(((JButton) internalComp).getText())
+                                    && !"End Current Game".equals(((JButton) internalComp).getText())) {
+                                internalComp.setEnabled(false);
+                            }
+                        }
+                    }
+                }
+            }
+        });
         return button;
     }
 }
