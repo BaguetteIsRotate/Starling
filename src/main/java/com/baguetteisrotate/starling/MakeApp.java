@@ -180,6 +180,7 @@ public class MakeApp extends JFrame {
         CardsUI cards = new CardsUI();
         JPanel big = new JPanel();
         JButton button = new JButton("Play Cards");
+        button.setPreferredSize(new Dimension(100,100));
         big.add(button);
         button.addActionListener(e -> {
             cards.addGametoPanel(big);
