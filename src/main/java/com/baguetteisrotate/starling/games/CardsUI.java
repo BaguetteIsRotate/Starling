@@ -29,9 +29,7 @@ public class CardsUI {
     private JPanel theMother;
     private TextArea statsArea;
     private JButton continueahhh;
-    private int currscore;
     private Card[] cards;
-    private int currstreak;
     private String currmessage;
     private CardsUI x;
     private HashMap<String, Integer> statmap = CardsStats.load();
@@ -43,11 +41,11 @@ public class CardsUI {
      * @return
      */
     public JPanel getPanel() {
-        makeJPanel(currstreak, currscore, cards, currmessage, x);
+        makeJPanel(cards, currmessage, x);
         return panel;
     }
 
-    private JPanel makeJPanel(int curr_score, int number, Card[] cards, String message, CardsUI card) {
+    private JPanel makeJPanel(Card[] cards, String message, CardsUI card) {
         // make main JPanel
         this.panel = new JPanel();
         this.panel.setLayout(new BorderLayout());
@@ -68,9 +66,8 @@ public class CardsUI {
 
         // initialize buttons
         listiesOfButtonsies.clear();
-        currentGame = new CardsGame(6, 1, 20);
-        CardsGame.Card[] cards2 = currentGame.getCards();
-        for (CardsGame.Card c : cards2) {
+        // currentGame = new CardsGame(6, 1, 20);
+        for (CardsGame.Card c : cards) {
             JButton button = makeButton(c);
             listiesOfButtonsies.add(button);
             game.add(button);
@@ -122,7 +119,6 @@ public class CardsUI {
      */
     public void addGametoPanel(JPanel panel2) {
         this.theMother = panel2;
-        this.x = this.x;
         statmap = CardsStats.load();
         statmap.put("total_games", statmap.get("total_games") + 1);
 
@@ -130,15 +126,14 @@ public class CardsUI {
     }
 
     private void updatePanel() {
-        CardsGame g = new CardsGame(6, 1, 20);
-        CardsGame.makeCards(6, 1, 20);
-        currmessage = "Which card had the number " + g.makeQuestion() + "?";
+        currentGame = new CardsGame(6, 1, 20);
+        currmessage = "Which card had the number " + currentGame.makeQuestion() + "?";
 
         if (theMother != null) {
             if (this.panel != null) {
                 theMother.remove(this.panel);
             }
-            this.panel = makeJPanel(currstreak, currscore, g.getCards(), currmessage, this);
+            this.panel = makeJPanel(currentGame.getCards(), currmessage, this);
             theMother.add(this.panel);
             theMother.revalidate();
             theMother.repaint();
@@ -150,7 +145,7 @@ public class CardsUI {
     public void screamOutTheStatsPlease(String whoDied) {
         if (this.statsArea != null) {
             this.statsArea.setText(whoDied + "\n Score: "
-                    + this.currscore + "\n Streak: " + this.currstreak + "\n Highest Score:"
+                    + this.statmap.getOrDefault("curr_score",0) + "\n Streak: " + this.statmap.getOrDefault("curr_streak",0) + "\n Highest Score:"
                     + statmap.get("highest_score") + "\n Highest Streak: " + statmap.get("highest_streak"));
         }
         if (this.continueahhh != null) {
@@ -170,7 +165,7 @@ public class CardsUI {
             }
             if (this.statsArea != null) {
                 this.statsArea.setText(currmessage + "\n Score: "
-                        + this.currscore + "\n Streak: " + this.currstreak + "\n Highest Score:"
+                        + this.statmap.getOrDefault("curr_score",0) + "\n Streak: " + this.statmap.getOrDefault("curr_streak",0) + "\n Highest Score:"
                         + statmap.get("highest_score") + "\n Highest Streak: " + statmap.get("highest_streak"));
             }
         });
@@ -186,15 +181,19 @@ public class CardsUI {
             String outcome = "";
             if (currentGame.isCorrect(card)) {
                 outcome = "Correct! ";
-                statmap.put("total_wins", statmap.get("total_wins") + 1);
+                CardsStats.update(statmap, true);
             } else {
                 outcome = "Incorrect! ";
+                CardsStats.update(statmap, false);
             }
             button.setText(String.valueOf(card.getNum()));
+            int currscore = statmap.getOrDefault("curr_score", 0);
             if (currscore > statmap.get("highest_score")) {
                 statmap.put("highest_score", currscore);
             }
             statmap.put("curr_score", currscore);
+
+            int currstreak = statmap.getOrDefault("curr_streak",0);
             statmap.put("curr_streak", currstreak);
             if (statmap.get("highest_streak") < currstreak) {
                 statmap.put("highest_streak", currstreak);
@@ -208,7 +207,7 @@ public class CardsUI {
                     if (comp instanceof JPanel) {
                         for (java.awt.Component internalComp : ((JPanel) comp).getComponents()) {
                             if (internalComp instanceof JButton
-                                    && !"Continue".equals(((JButton) internalComp).getText())
+                                    && !"Next Round".equals(((JButton) internalComp).getText())
                                     && !"End Current Game".equals(((JButton) internalComp).getText())) {
                                 internalComp.setEnabled(false);
                             }

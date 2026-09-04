@@ -63,4 +63,33 @@ public class CardsStats {
             return smallMap;
         }
     }
+
+    public static void update(HashMap<String, Integer> statmap, boolean theUserseshasTheWinses) {
+        statmap.put("total_games", statmap.get("total_games") + 1);
+
+        int curr_streak = statmap.get("curr_streak");
+        if (theUserseshasTheWinses) {
+            statmap.put("curr_streak", curr_streak + 1);
+            statmap.put("highest_streak",Math.max(statmap.get("highest_streak"), curr_streak + 1));
+            statmap.put("total_wins", statmap.get("total_wins")+1);
+
+            int curr_score = statmap.get("curr_score") + 5*statmap.get("curr_streak");
+            statmap.put("curr_score", curr_score);
+            statmap.put("highest_score",Math.max(statmap.get("highest_score"), curr_score));
+
+
+            if (curr_streak < 0) {
+                curr_streak = 0;
+            }
+            statmap.put("curr_streak", statmap.get("curr_streak")+1);
+        } else {
+            if (curr_streak > 0) {
+                curr_streak = 0;
+            }
+            statmap.put("curr_streak", curr_streak - 1);
+
+            int curr_score = statmap.get("curr_score") - 5*statmap.get("curr_streak");
+            statmap.put("curr_score", curr_score);
+        }
+    }
 }
