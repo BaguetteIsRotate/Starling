@@ -32,7 +32,8 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 
 import java.awt.BorderLayout;
-import java.awt.geom.Ellipse2D; 
+import java.awt.Dimension;
+import java.awt.geom.Ellipse2D;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
@@ -41,13 +42,13 @@ public class Graph {
     private String xlabel;
     private String ylabel;
     private String title;
-    private HashMap<Integer, String> xvalues;
+    private HashMap<Integer, ZonedDateTime> xvalues;
     private HashMap<Integer, Integer> yvalues;
     private HashMap<String, Object> map = new HashMap<>();
     private String path = "";
 
     // constructor method with input values
-    public Graph(String title, String xlabel, HashMap<Integer, String> xvalues, String ylabel,
+    public Graph(String title, String xlabel, HashMap<Integer, ZonedDateTime> xvalues, String ylabel,
             HashMap<Integer, Integer> yvalues) {
         this.title = title;
         this.xlabel = xlabel;
@@ -81,14 +82,11 @@ public class Graph {
             this.xlabel = (String) map.get("xlabel");
             this.ylabel = (String) map.get("ylabel");
             this.title = (String) map.get("title");
-            //y is actually x. i named the variables arbitrarily. Sucks to be you, Evan.
-            HashMap<Integer,ZonedDateTime> y = mapper.convertValue(
+            this.xvalues = mapper.convertValue(
                     map.get("xval"),
                     new TypeReference<HashMap<Integer, ZonedDateTime>>() {
                     });
-            for(int i: y.keySet()){
-                this.xvalues.put(i, y.get(i).format(DateTimeFormatter.ISO_DATE));
-            }
+
             this.yvalues = mapper.convertValue(
                     map.get("yval"),
                     new TypeReference<HashMap<Integer, Integer>>() {
@@ -105,7 +103,7 @@ public class Graph {
         this.path = path1;
     }
 
-    public void reload(String title, String xlabel, HashMap<Integer, String> xvalues, String ylabel,
+    public void reload(String title, String xlabel, HashMap<Integer, ZonedDateTime> xvalues, String ylabel,
             HashMap<Integer, Integer> yvalues) {
         this.title = title;
         this.xlabel = xlabel;
@@ -120,20 +118,12 @@ public class Graph {
     }
 
     public boolean save() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this.map);
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(this.path)));
-            writer.println(s);
-            writer.close();
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+        return save(this.path);
     }
 
     public boolean save(String path1) {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         try {
             String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this.map);
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(path1)));
@@ -141,30 +131,39 @@ public class Graph {
             writer.close();
             return true;
         } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
-    public JPanel makePanel(boolean includeGraph,JPanel mother) {
-        loadDataFromPath();
+    public JPanel makePanel(boolean includeGraph, JPanel mother) {
         System.out.println(xvalues);
         JPanel x = new JPanel();
+        x.setLayout(new BorderLayout());
         if (!includeGraph) {
             JLabel label = new JLabel("Rate your day on a scale of 1-5!");
             x.add(label);
         } else {
-            JButton button = new JButton("reload");
+            JButton button = new JButton("Reload");
             button.addActionListener(e -> {
                 mother.remove(x);
-                mother.add(makePanel(includeGraph,mother),BorderLayout.NORTH);
+                mother.add(makePanel(includeGraph, mother), BorderLayout.NORTH);
+                mother.revalidate();
+                mother.repaint();
             });
-            x.add(button);
-            JLabel label = new JLabel("Mood over Time");
-            x.add(label);
+            x.add(button, BorderLayout.NORTH);
             DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-            for (int i = 0; i < yvalues.keySet().size(); i++) {
-                dataset.addValue(yvalues.get(i), ""+i, xvalues.get(i));
+
+            HashMap<Integer, String> labels = new HashMap<>();
+            for (int i : this.xvalues.keySet()) {
+                labels.put(i, this.xvalues.get(i).format(DateTimeFormatter.ofPattern("d MMM uuuu hh:mm:ss")).toString());
             }
+
+            for (Integer i : xvalues.keySet()) {
+                dataset.addValue(yvalues.get(i), "Mood", i);
+            }
+        
+
             JFreeChart chart = ChartFactory.createLineChart(
                     title,
                     xlabel,
@@ -173,20 +172,22 @@ public class Graph {
                     PlotOrientation.VERTICAL,
                     false,
                     false,
-                    false
-                );
+                    false);
             CategoryPlot plot = chart.getCategoryPlot();
             CategoryAxis domainAxis = plot.getDomainAxis();
-    domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+            domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
             LineAndShapeRenderer renderer = new LineAndShapeRenderer();
             renderer.setSeriesLinesVisible(0, false);
             java.awt.Shape circle = new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0);
-renderer.setDefaultShape(circle);
+            renderer.setDefaultShape(circle);
             renderer.setSeriesShapesVisible(0, true);
             plot.setRenderer(renderer);
             ChartPanel chartpanel = new ChartPanel(chart);
-            x.add(chartpanel);
+            chartpanel.setPreferredSize(new Dimension(350, 300));
+            x.add(chartpanel, BorderLayout.CENTER);
         }
         return x;
     }
+
+    public HashMap<Integer, ZonedDateTime> getXvalues() { return this.xvalues; } public HashMap<Integer, Integer> getYvalues() { return this.yvalues; }
 }

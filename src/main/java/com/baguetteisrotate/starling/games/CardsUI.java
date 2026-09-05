@@ -175,8 +175,8 @@ public class CardsUI {
 
     public JButton makeButton(CardsGame.Card card) {
         JButton button = new JButton(String.valueOf(card.getNum()));
-        button.setMinimumSize(new Dimension(0, 115));
-        button.setPreferredSize(new Dimension(0, 115));
+        button.setMinimumSize(new Dimension(115, 115));
+        button.setPreferredSize(new Dimension(115, 115));
         button.addActionListener(e -> {
             String outcome = "";
             if (currentGame.isCorrect(card)) {

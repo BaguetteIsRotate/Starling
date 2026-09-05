@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import com.baguetteisrotate.starling.graphing.Graph;
 
 public class MoodTracker {
-    private HashMap<Integer, String> x;
+    private HashMap<Integer, ZonedDateTime> x;
     private HashMap<Integer, Integer> y;
     private int currnum;
     private Graph graph;
@@ -20,20 +20,27 @@ public class MoodTracker {
     private JPanel visual;
 
     public MoodTracker() {
-        this.x = new HashMap<Integer, String>();
+        this.x = new HashMap<Integer, ZonedDateTime>();
         this.y = new HashMap<Integer, Integer>();
         this.currnum = 0;
     }
 
     public JPanel makePanel(String path, boolean showGraph) {
-        currnum = 0;
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        graph = new Graph("Mood over Time", "Date", this.x, "Mood", this.y);
+
+        graph = new Graph("Mood over Time","Date",this.x,"Mood",this.y);
+
         graph.addPath(path);
-        graph.save();
+
+        if (graph.loadDataFromPath()) {
+            this.x = graph.getXvalues();
+            this.y = graph.getYvalues();
+        }
+
         visual = graph.makePanel(showGraph, panel);
-        panel.add(visual);
+        panel.add(visual, BorderLayout.CENTER);
+
         if (!showGraph) {
             JButton button1 = makeButton(1, showGraph);
             JButton button2 = makeButton(2, showGraph);
@@ -43,33 +50,34 @@ public class MoodTracker {
 
             JPanel small = new JPanel();
             small.setLayout(new GridLayout(1, 5));
+
             small.add(button1);
             small.add(button2);
             small.add(button3);
             small.add(button4);
             small.add(button5);
+
             panel.add(small, BorderLayout.SOUTH);
         }
+
         return panel;
-    }
+}
 
     public JButton makeButton(int x, boolean showGraph) {
-        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
         JButton button = new JButton(x + "");
         button.addActionListener(e -> {
             ZonedDateTime time = ZonedDateTime.now();
-            time.format(formatter);
-            this.x.put(currnum, time.toString());
+            this.x = graph.getXvalues();
+            this.y = graph.getYvalues();
+            this.x.put(currnum, time);
             this.y.put(currnum, x);
-            graph.loadDataFromPath();
             graph.reload("Mood over Time", "Date", this.x, "Mood", this.y);
             graph.save("mood.json");
-            if (showGraph) {
                 panel.remove(visual);
+                visual = graph.makePanel(showGraph, panel);
                 panel.add(graph.makePanel(showGraph,panel));
+                panel.revalidate();
                 panel.repaint();
-            }
-            panel.repaint();
             currnum += 1;
         });
         return button;
