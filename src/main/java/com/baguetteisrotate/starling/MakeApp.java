@@ -282,7 +282,6 @@ public class MakeApp extends JFrame {
     }
 
     public JPanel PageThree() {
-
         MoodTracker tracker = new MoodTracker();
         JPanel graph = tracker.makePanel("mood.json", true);
         JPanel page = new JPanel();
@@ -305,6 +304,7 @@ public class MakeApp extends JFrame {
         });
         buttonMain.addActionListener(e -> {
             remove(pageThree);
+            pageThree.repaint();
             add(pageMain);
             revalidate();
             repaint();

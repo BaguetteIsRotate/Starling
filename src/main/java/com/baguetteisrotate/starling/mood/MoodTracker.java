@@ -32,8 +32,8 @@ public class MoodTracker {
         graph = new Graph("Mood over Time", "Date", this.x, "Mood", this.y);
         graph.addPath(path);
         graph.save();
-        visual = graph.makePanel(showGraph);
-        panel.add(visual, BorderLayout.NORTH);
+        visual = graph.makePanel(showGraph, panel);
+        panel.add(visual);
         if (!showGraph) {
             JButton button1 = makeButton(1, showGraph);
             JButton button2 = makeButton(2, showGraph);
@@ -65,9 +65,9 @@ public class MoodTracker {
             graph.reload("Mood over Time", "Date", this.x, "Mood", this.y);
             graph.save("mood.json");
             if (showGraph) {
-                JPanel visual2 = graph.makePanel(showGraph);
                 panel.remove(visual);
-                panel.add(visual2);
+                panel.add(graph.makePanel(showGraph,panel));
+                panel.repaint();
             }
             panel.repaint();
             currnum += 1;
