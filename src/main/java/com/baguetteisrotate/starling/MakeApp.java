@@ -4,6 +4,8 @@ import javax.swing.*;
 
 import com.baguetteisrotate.starling.games.CardsUI;
 import com.baguetteisrotate.starling.mood.MoodTracker;
+import com.baguetteisrotate.starling.mood.MoodUI;
+import com.baguetteisrotate.starling.graphing.GraphUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -282,8 +284,8 @@ public class MakeApp extends JFrame {
     }
 
     public JPanel PageThree() {
-        MoodTracker tracker = new MoodTracker();
-        JPanel graph = tracker.makePanel("mood.json", true);
+        GraphUI tracker = new GraphUI();
+        JPanel graph = tracker.makePanel();
         JPanel page = new JPanel();
         Color color = new Color(255, 248, 231);
         page.setBackground(color);
@@ -318,8 +320,8 @@ public class MakeApp extends JFrame {
 
     public JPanel PageFour() {
 
-        MoodTracker tracker = new MoodTracker();
-        JPanel graph = tracker.makePanel("mood.json", false);
+        MoodUI tracker = new MoodUI();
+        JPanel graph = tracker.makePanel();
         JPanel page = new JPanel();
         Color color = new Color(255, 248, 231);
         page.setBackground(color);

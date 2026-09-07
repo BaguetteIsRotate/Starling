@@ -49,7 +49,7 @@ public class CardsUI {
         // make main JPanel
         this.panel = new JPanel();
         this.panel.setLayout(new BorderLayout());
-
+        panel.setPreferredSize(new Dimension(200, 700));
         // make title JPanel
         JPanel title = new JPanel();
         JLabel label = new JLabel("Cards");
@@ -59,9 +59,9 @@ public class CardsUI {
 
         // make game JPanel
         JPanel game = new JPanel();
-        game.setLayout(new GridLayout(3, 2, 8, 8));
-        game.setMinimumSize(new Dimension(0, 115));
-        game.setPreferredSize(new Dimension(0, 115));
+        game.setLayout(new GridLayout(3, 2));
+        game.setPreferredSize(new Dimension(100, 500));
+        game.setMaximumSize(new Dimension(100,500));
         panel.add(game, BorderLayout.CENTER);
 
         // initialize buttons
@@ -69,6 +69,8 @@ public class CardsUI {
         // currentGame = new CardsGame(6, 1, 20);
         for (CardsGame.Card c : cards) {
             JButton button = makeButton(c);
+            button.setPreferredSize(new Dimension(50,60));
+            button.setMaximumSize(new Dimension(50,60));
             listiesOfButtonsies.add(button);
             game.add(button);
         }
@@ -115,7 +117,7 @@ public class CardsUI {
     /**
      * Adds the game to a given JPanel and initializes the game.
      * 
-     * @param panel2 the JPanel which the game is adde to
+     * @param panel2 the JPanel which the game is added to
      */
     public void addGametoPanel(JPanel panel2) {
         this.theMother = panel2;
@@ -175,8 +177,8 @@ public class CardsUI {
 
     public JButton makeButton(CardsGame.Card card) {
         JButton button = new JButton(String.valueOf(card.getNum()));
-        button.setMinimumSize(new Dimension(115, 115));
-        button.setPreferredSize(new Dimension(115, 115));
+        button.setPreferredSize(new Dimension(50, 75));
+        button.setMaximumSize(new Dimension(50,75));
         button.addActionListener(e -> {
             String outcome = "";
             if (currentGame.isCorrect(card)) {

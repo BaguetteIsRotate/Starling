@@ -2,84 +2,65 @@ package com.baguetteisrotate.starling.mood;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.baguetteisrotate.starling.graphing.Graph;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 public class MoodTracker {
-    private HashMap<Integer, ZonedDateTime> x;
-    private HashMap<Integer, Integer> y;
-    private int currnum;
-    private Graph graph;
-    private JPanel panel;
-    private JPanel visual;
 
-    public MoodTracker() {
-        this.x = new HashMap<Integer, ZonedDateTime>();
-        this.y = new HashMap<Integer, Integer>();
-        this.currnum = 0;
+    private final Path path;
+
+    public static final ObjectMapper MAPPER =
+            new ObjectMapper()
+                    .registerModule(new JavaTimeModule());
+    
+    public MoodTracker(Path path) {
+        this.path = path;
     }
 
-    public JPanel makePanel(String path, boolean showGraph) {
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+    // One must imagine sisyphus happy and run loadData
+    public List<MoodEntry> loadData() {
+        try {
+            if (Files.notExists(path)) {
+                return new ArrayList<>();
+            }
 
-        graph = new Graph("Mood over Time","Date",this.x,"Mood",this.y);
+            return MAPPER.readValue(
+                    path.toFile(),
+                    new TypeReference<List<MoodEntry>>() {}
+            );
 
-        graph.addPath(path);
-
-        if (graph.loadDataFromPath()) {
-            this.x = graph.getXvalues();
-            this.y = graph.getYvalues();
+        } catch (IOException e) {
+            throw new RuntimeException(
+                    "Could not load mood history from " + path, e
+            );
         }
+    }
 
-        visual = graph.makePanel(showGraph, panel);
-        panel.add(visual, BorderLayout.CENTER);
+    public void save(List<MoodEntry> entries) {
+        try {
+            if (path.getParent() != null) {
+                Files.createDirectories(path.getParent());
+            }
+            MAPPER.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), entries);
 
-        if (!showGraph) {
-            JButton button1 = makeButton(1, showGraph);
-            JButton button2 = makeButton(2, showGraph);
-            JButton button3 = makeButton(3, showGraph);
-            JButton button4 = makeButton(4, showGraph);
-            JButton button5 = makeButton(5, showGraph);
-
-            JPanel small = new JPanel();
-            small.setLayout(new GridLayout(1, 5));
-
-            small.add(button1);
-            small.add(button2);
-            small.add(button3);
-            small.add(button4);
-            small.add(button5);
-
-            panel.add(small, BorderLayout.SOUTH);
+        } catch (IOException e) {
+            throw new RuntimeException(
+                    "Could not save mood history to " + path, e
+            );
         }
-
-        return panel;
-}
-
-    public JButton makeButton(int x, boolean showGraph) {
-        JButton button = new JButton(x + "");
-        button.addActionListener(e -> {
-            ZonedDateTime time = ZonedDateTime.now();
-            this.x = graph.getXvalues();
-            this.y = graph.getYvalues();
-            this.x.put(currnum, time);
-            this.y.put(currnum, x);
-            graph.reload("Mood over Time", "Date", this.x, "Mood", this.y);
-            graph.save("mood.json");
-                panel.remove(visual);
-                visual = graph.makePanel(showGraph, panel);
-                panel.add(graph.makePanel(showGraph,panel));
-                panel.revalidate();
-                panel.repaint();
-            currnum += 1;
-        });
-        return button;
     }
 }
