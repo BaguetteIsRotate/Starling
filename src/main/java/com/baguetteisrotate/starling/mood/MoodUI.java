@@ -15,16 +15,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.baguetteisrotate.starling.graphing.Graph;
+import com.baguetteisrotate.starling.Tracker;
+import com.baguetteisrotate.starling.Entry;
 
 public class MoodUI {
-    private final MoodTracker tracker;
+    private final Tracker<MoodEntry> tracker;
     private final List<MoodEntry> entries;
 
     private JPanel panel;
     private JPanel visual;
 
     public MoodUI() {
-        tracker = new MoodTracker(Path.of("mood.json")); 
+        tracker = new Tracker<MoodEntry>(Path.of("mood.json"), MoodEntry.class); 
         entries = new ArrayList<>(tracker.loadData());
     }
 

@@ -1,4 +1,4 @@
-package com.baguetteisrotate.starling.mood;
+package com.baguetteisrotate.starling;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -19,20 +19,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.core.type.TypeReference;
 
-public class MoodTracker {
+public class Tracker<T extends Entry> {
 
     private final Path path;
+    private final Class<T> entryClass;
 
     public static final ObjectMapper MAPPER =
             new ObjectMapper()
                     .registerModule(new JavaTimeModule());
-    
-    public MoodTracker(Path path) {
+
+    public Tracker(Path path, Class<T> entryClass) {
         this.path = path;
+        this.entryClass = entryClass;
     }
 
-    // One must imagine sisyphus happy and run loadData
-    public List<MoodEntry> loadData() {
+    public List<T> loadData() {
         try {
             if (Files.notExists(path)) {
                 return new ArrayList<>();
@@ -40,7 +41,8 @@ public class MoodTracker {
 
             return MAPPER.readValue(
                     path.toFile(),
-                    new TypeReference<List<MoodEntry>>() {}
+                    MAPPER.getTypeFactory()
+                            .constructCollectionType(List.class, entryClass)
             );
 
         } catch (IOException e) {
@@ -50,12 +52,14 @@ public class MoodTracker {
         }
     }
 
-    public void save(List<MoodEntry> entries) {
+    public void save(List<T> entries) {
         try {
             if (path.getParent() != null) {
                 Files.createDirectories(path.getParent());
             }
-            MAPPER.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), entries);
+
+            MAPPER.writerWithDefaultPrettyPrinter()
+                    .writeValue(path.toFile(), entries);
 
         } catch (IOException e) {
             throw new RuntimeException(

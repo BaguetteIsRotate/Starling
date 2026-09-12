@@ -48,23 +48,23 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.geom.Ellipse2D;
 
-import com.baguetteisrotate.starling.mood.MoodEntry;
+import com.baguetteisrotate.starling.Entry;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
-public class Graph {
+public class Graph<T extends Entry> {
     private String xlabel;
     private String ylabel;
     private String title;
-    private List<MoodEntry> entries;
+    private List<T> entries;
     private HashMap<String, Object> map = new HashMap<>();
     private String path = "";
 
     // constructor method with input values
     public Graph(String title, String xlabel, String ylabel,
-            List<MoodEntry> entries) {
+            List<T> entries) {
         this.title = title;
         this.xlabel = xlabel;
         this.ylabel = ylabel;
@@ -78,7 +78,7 @@ public class Graph {
 
         TimeSeries series = new TimeSeries("Mood");
 
-        for (MoodEntry entry : entries) {
+        for (Entry entry : entries) {
 
             ZonedDateTime time = entry.getTime();
             Millisecond millisecond = new Millisecond(
@@ -89,7 +89,7 @@ public class Graph {
 
             series.addOrUpdate(
                     millisecond,
-                    entry.getMood()
+                    entry.getValue()
             );
         }
 

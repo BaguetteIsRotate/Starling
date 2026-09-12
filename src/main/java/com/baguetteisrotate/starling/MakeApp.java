@@ -3,7 +3,7 @@ package com.baguetteisrotate.starling;
 import javax.swing.*;
 
 import com.baguetteisrotate.starling.games.CardsUI;
-import com.baguetteisrotate.starling.mood.MoodTracker;
+import com.baguetteisrotate.starling.Tracker;
 import com.baguetteisrotate.starling.mood.MoodUI;
 import com.baguetteisrotate.starling.graphing.GraphUI;
 
@@ -106,6 +106,7 @@ public class MakeApp extends JFrame {
         top.add(top3, BorderLayout.EAST);
         button3.addActionListener(e -> {
             remove(pageMain);
+            pageThree = PageThree();
             add(pageThree);
             revalidate();
             repaint();
@@ -286,7 +287,7 @@ public class MakeApp extends JFrame {
     public JPanel PageThree() {
         GraphUI tracker = new GraphUI();
         JPanel graph = tracker.makePanel();
-        JPanel page = new JPanel();
+        JPanel page = new JPanel(new BorderLayout());
         Color color = new Color(255, 248, 231);
         page.setBackground(color);
         JPanel smol = new JPanel();

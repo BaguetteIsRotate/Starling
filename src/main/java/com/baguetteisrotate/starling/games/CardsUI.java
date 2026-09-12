@@ -32,7 +32,7 @@ public class CardsUI {
     private Card[] cards;
     private String currmessage;
     private CardsUI x;
-    private HashMap<String, Integer> statmap = CardsStats.load();
+    private HashMap<String, Integer> statmap = CardEntry.load();
     private ArrayList<JButton> listiesOfButtonsies = new ArrayList<>();
     private CardsGame currentGame;
 
@@ -86,12 +86,14 @@ public class CardsUI {
 
         JPanel happybuttonsies = new JPanel(new FlowLayout(FlowLayout.CENTER));
         this.continueahhh = new JButton("Next Round");
+        this.continueahhh.setPreferredSize(new Dimension(100,100));
         this.continueahhh.setEnabled(false);
         this.continueahhh.addActionListener(e -> {
             updatePanel();
         });
 
         JButton buttonofDeatttthhhh = new JButton("End Current Game");
+        buttonofDeatttthhhh.setPreferredSize(new Dimension(100,100));
         buttonofDeatttthhhh.addActionListener(e -> {
             if (theMother != null) {
                 theMother.removeAll();
@@ -121,7 +123,7 @@ public class CardsUI {
      */
     public void addGametoPanel(JPanel panel2) {
         this.theMother = panel2;
-        statmap = CardsStats.load();
+        statmap = CardEntry.load();
         statmap.put("total_games", statmap.get("total_games") + 1);
 
         updatePanel();
@@ -183,10 +185,10 @@ public class CardsUI {
             String outcome = "";
             if (currentGame.isCorrect(card)) {
                 outcome = "Correct! ";
-                CardsStats.update(statmap, true);
+                CardEntry.update(statmap, true);
             } else {
                 outcome = "Incorrect! ";
-                CardsStats.update(statmap, false);
+                CardEntry.update(statmap, false);
             }
             button.setText(String.valueOf(card.getNum()));
             int currscore = statmap.getOrDefault("curr_score", 0);
@@ -200,7 +202,7 @@ public class CardsUI {
             if (statmap.get("highest_streak") < currstreak) {
                 statmap.put("highest_streak", currstreak);
             }
-            CardsStats stats = new CardsStats();
+            CardEntry stats = new CardEntry();
             stats.set(statmap);
             stats.save();
             screamOutTheStatsPlease(outcome);

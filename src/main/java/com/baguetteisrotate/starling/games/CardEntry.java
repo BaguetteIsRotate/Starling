@@ -6,11 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import com.baguetteisrotate.starling.Entry;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class CardsStats {
+public class CardEntry extends Entry {
     private HashMap<String, Integer> statmap;
     public void set(HashMap<String,Integer> map){
         statmap=map;
@@ -36,12 +37,13 @@ public class CardsStats {
 
     public static HashMap<String, Integer> load() {
         ObjectMapper mapper = new ObjectMapper();
+        HashMap<String, Integer> smallMap;
         try {
             File file = new File("cards.json");
             TypeReference<HashMap<String, HashMap<String, Integer>>> typeRef = new TypeReference<HashMap<String, HashMap<String, Integer>>>() {
             };
             HashMap<String, HashMap<String, Integer>> map = mapper.readValue(file, typeRef);
-            HashMap<String, Integer> smallMap = map.get("cards");
+            smallMap = map.get("cards");
             if (smallMap == null) {
                 smallMap = new HashMap<>();
                 smallMap.put("highest_score", 0);
@@ -51,17 +53,18 @@ public class CardsStats {
                 smallMap.put("highest_streak", 0);
                 smallMap.put("curr_streak", 0);
             }
-            return smallMap;
         } catch (Exception e) {
-            HashMap<String, Integer> smallMap = new HashMap<>();
+            smallMap = new HashMap<>();
             smallMap.put("highest_score", 0);
             smallMap.put("total_games", 0);
             smallMap.put("total_wins", 0);
             smallMap.put("curr_score", 0);
             smallMap.put("highest_streak", 0);
             smallMap.put("curr_streak", 0);
-            return smallMap;
         }
+
+        // super.setValue(smallMap.get("curr_score"));
+        return smallMap;
     }
 
     public static void update(HashMap<String, Integer> statmap, boolean theUserseshasTheWinses) {
@@ -91,5 +94,12 @@ public class CardsStats {
             int curr_score = statmap.get("curr_score") - 5*statmap.get("curr_streak");
             statmap.put("curr_score", curr_score);
         }
+    }
+    public int getValue(){
+        return statmap.get("curr_score");
+    }
+
+    public void setValue(int value) {
+        this.statmap.put("curr_score", value);
     }
 }
