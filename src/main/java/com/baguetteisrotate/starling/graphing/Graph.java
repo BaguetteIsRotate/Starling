@@ -5,118 +5,190 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.EventListener;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CyclicBarrier;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.awt.Color;
+import java.awt.Font;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.geom.Ellipse2D;
+
+import com.baguetteisrotate.starling.Entry;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
-public class Graph {
+public class Graph<T extends Entry> {
     private String xlabel;
     private String ylabel;
     private String title;
-    private HashMap<Integer, String> xvalues;
-    private HashMap<Integer, Integer> yvalues;
+    private List<T> entries;
     private HashMap<String, Object> map = new HashMap<>();
     private String path = "";
 
     // constructor method with input values
-    public Graph(String title, String xlabel, HashMap<Integer, String> xvalues, String ylabel,
-            HashMap<Integer, Integer> yvalues) {
+    public Graph(String title, String xlabel, String ylabel,
+            List<T> entries) {
         this.title = title;
         this.xlabel = xlabel;
         this.ylabel = ylabel;
-        this.xvalues = xvalues;
-        this.yvalues = yvalues;
-        map.put("xlabel", this.xlabel);
-        map.put("ylabel", this.ylabel);
-        map.put("xval", this.xvalues);
-        map.put("yval", this.yvalues);
-        map.put("title", this.title);
+        this.entries = entries;
     }
 
-    // constructor method that takes in path
-    public Graph(String path) {
-        this.path = path;
-    }
+    public JPanel makePanel() {
+        
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-    // One must imagine sisyphus happy and run loadDataFromPath if they did the
-    // second constructor
-    @SuppressWarnings("unchecked")
-    public boolean loadDataFromPath() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            File file = new File(this.path);
-            TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
-            };
-            HashMap<String, Object> map = mapper.readValue(file, typeRef);
-            this.xlabel = map.get("xlabel").toString();
-            this.xvalues = (HashMap<Integer, String>) map.get("xval");
-            this.ylabel = map.get("ylabel").toString();
-            this.yvalues = (HashMap<Integer, Integer>) map.get("yval");
-            this.title = map.get("title").toString();
-            this.map = map;
-            return true;
-        } catch (Exception e) {
-            return false;
+        TimeSeries series = new TimeSeries("Mood");
+
+        for (Entry entry : entries) {
+
+            ZonedDateTime time = entry.getTime();
+            Millisecond millisecond = new Millisecond(
+                    java.util.Date.from(
+                            time.toInstant()
+                    )
+            );
+
+            series.addOrUpdate(
+                    millisecond,
+                    entry.getValue()
+            );
         }
+
+        TimeSeriesCollection dataset = new TimeSeriesCollection(series);
+
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(
+            title,
+            xlabel,
+            ylabel,
+            dataset,
+            false,
+            true,
+            false);
+
+        formatChart(chart);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setBorder(null);
+        chartPanel.setMouseWheelEnabled(true);
+        chartPanel.setDomainZoomable(true);
+        chartPanel.setRangeZoomable(false);
+
+        panel.add(chartPanel, BorderLayout.CENTER);
+
+        return panel;
+
+            // CategoryPlot plot = chart.getCategoryPlot();
+            // CategoryAxis domainAxis = plot.getDomainAxis();
+            // domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+            // LineAndShapeRenderer renderer = new LineAndShapeRenderer();
+            // renderer.setSeriesLinesVisible(0, false);
+            // java.awt.Shape circle = new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0);
+            // renderer.setDefaultShape(circle);
+            // renderer.setSeriesShapesVisible(0, true);
+            // plot.setRenderer(renderer);
+            // ChartPanel chartpanel = new ChartPanel(chart);
+            // chartpanel.setPreferredSize(new Dimension(350, 300));
+            // x.add(chartpanel, BorderLayout.CENTER);
+            // return x
     }
 
-    public void addPath(String path1) {
-        this.path = path1;
+    private void formatChart(JFreeChart chart) {
+        chart.setBackgroundPaint(null);
+
+        chart.getTitle().setFont(
+                new Font("SansSerif", Font.BOLD, 20)
+        );
+
+        XYPlot plot = chart.getXYPlot();
+
+        plot.setBackgroundPaint(Color.WHITE);
+
+        plot.setDomainGridlinesVisible(true);
+        plot.setRangeGridlinesVisible(true);
+
+        plot.setDomainGridlinePaint(new Color(220, 220, 220));
+        plot.setRangeGridlinePaint(new Color(220, 220, 220));
+
+        DateAxis dateAxis = (DateAxis) plot.getDomainAxis();
+
+        dateAxis.setLabelFont(
+                new Font("SansSerif", Font.PLAIN, 12)
+        );
+
+        dateAxis.setTickLabelFont(
+                new Font("SansSerif", Font.PLAIN, 11)
+        );
+
+        dateAxis.setDateFormatOverride(
+            new SimpleDateFormat("MMM d")
+        );
+
+        dateAxis.setAutoRange(true);
+
+        NumberAxis rangeAxis =
+                (NumberAxis) plot.getRangeAxis();
+
+        rangeAxis.setRange(1.0, 5.0);
+
+        rangeAxis.setStandardTickUnits(
+                NumberAxis.createIntegerTickUnits()
+        );
+
+        rangeAxis.setLabelFont(
+                new Font("SansSerif", Font.PLAIN, 12)
+        );
+
+        rangeAxis.setTickLabelFont(
+                new Font("SansSerif", Font.PLAIN, 11)
+        );
+
+        XYLineAndShapeRenderer renderer =
+                new XYLineAndShapeRenderer();
+
+        renderer.setDefaultLinesVisible(true);
+        renderer.setDefaultShapesVisible(true);
+
+        plot.setRenderer(renderer);
     }
 
-    public void reload(String title, String xlabel, HashMap<Integer, String> xvalues, String ylabel,
-            HashMap<Integer, Integer> yvalues) {
-        this.title = title;
-        this.xlabel = xlabel;
-        this.ylabel = ylabel;
-        this.xvalues = xvalues;
-        this.yvalues = yvalues;
-        map.put("xlabel", this.xlabel);
-        map.put("ylabel", this.ylabel);
-        map.put("xval", this.xvalues);
-        map.put("yval", this.yvalues);
-        map.put("title", this.title);
-    }
-
-    public boolean save() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this.map);
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(this.path)));
-            writer.println(s);
-            writer.close();
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    public boolean save(String path1) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this.map);
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(path1)));
-            writer.println(s);
-            writer.close();
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    public JPanel makePanel(boolean includeGraph) {
-        JPanel x = new JPanel();
-        if(!includeGraph){
-            JLabel label = new JLabel("Rate your day on a scale of 1-5!");
-            x.add(label);
-        }else{
-            JLabel label = new JLabel("Mood over Time (\"Rate your day on a scale of 1-5!\")");
-            x.add(label);
-        }
-        return x;
-    }
+    
 }

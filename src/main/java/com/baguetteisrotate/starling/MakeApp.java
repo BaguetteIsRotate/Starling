@@ -3,7 +3,9 @@ package com.baguetteisrotate.starling;
 import javax.swing.*;
 
 import com.baguetteisrotate.starling.games.CardsUI;
-import com.baguetteisrotate.starling.mood.MoodTracker;
+import com.baguetteisrotate.starling.Tracker;
+import com.baguetteisrotate.starling.mood.MoodUI;
+import com.baguetteisrotate.starling.graphing.GraphUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -104,6 +106,7 @@ public class MakeApp extends JFrame {
         top.add(top3, BorderLayout.EAST);
         button3.addActionListener(e -> {
             remove(pageMain);
+            pageThree = PageThree();
             add(pageThree);
             revalidate();
             repaint();
@@ -180,6 +183,7 @@ public class MakeApp extends JFrame {
         CardsUI cards = new CardsUI();
         JPanel big = new JPanel();
         JButton button = new JButton("Play Cards");
+        button.setPreferredSize(new Dimension(100,100));
         big.add(button);
         button.addActionListener(e -> {
             cards.addGametoPanel(big);
@@ -281,10 +285,9 @@ public class MakeApp extends JFrame {
     }
 
     public JPanel PageThree() {
-
-        MoodTracker tracker = new MoodTracker();
-        JPanel graph = tracker.makePanel("mood.json", true);
-        JPanel page = new JPanel();
+        GraphUI tracker = new GraphUI();
+        JPanel graph = tracker.makePanel();
+        JPanel page = new JPanel(new BorderLayout());
         Color color = new Color(255, 248, 231);
         page.setBackground(color);
         JPanel smol = new JPanel();
@@ -304,6 +307,7 @@ public class MakeApp extends JFrame {
         });
         buttonMain.addActionListener(e -> {
             remove(pageThree);
+            pageThree.repaint();
             add(pageMain);
             revalidate();
             repaint();
@@ -317,8 +321,8 @@ public class MakeApp extends JFrame {
 
     public JPanel PageFour() {
 
-        MoodTracker tracker = new MoodTracker();
-        JPanel graph = tracker.makePanel("mood.json", false);
+        MoodUI tracker = new MoodUI();
+        JPanel graph = tracker.makePanel();
         JPanel page = new JPanel();
         Color color = new Color(255, 248, 231);
         page.setBackground(color);
