@@ -17,5 +17,5 @@ Starling prioritizes a simple, easy-to-use UI with large buttons to accommodate 
 References: 
 1.  Lui F, Tsao JW. Alzheimer Disease. ncbibooksFebruary 12, 2024. Accessed August 7, 2026. [https://www.ncbi.nlm.nih.gov/books/NBK499922/](https://www.ncbi.nlm.nih.gov/books/NBK499922/)
 2.  Pahlavani HA. Exercise therapy to prevent and treat Alzheimer’s disease. Frontiers in Aging Neuroscience2023;15. [doi:10.3389/fnagi.2023.1243869](https://pubmed.ncbi.nlm.nih.gov/37600508/)
-‌3. Wodny C. Nature’s Shapeshifters: Bird Murmurations. Inhf.org September 24, 2024. Accessed August 8, 2026. [https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations)
+3.  Wodny C. Nature’s Shapeshifters: Bird Murmurations. Inhf.org September 24, 2024. Accessed August 8, 2026. [https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations)
 ‌
