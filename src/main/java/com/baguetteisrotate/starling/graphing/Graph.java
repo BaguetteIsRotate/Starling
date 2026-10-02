@@ -81,6 +81,7 @@ public class Graph<T extends Entry> {
         for (Entry entry : entries) {
 
             ZonedDateTime time = entry.getTime();
+            if (time == null) { continue; }
             Millisecond millisecond = new Millisecond(
                     java.util.Date.from(
                             time.toInstant()

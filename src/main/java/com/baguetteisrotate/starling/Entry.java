@@ -11,6 +11,7 @@ public abstract class Entry {
 
     protected Entry(ZonedDateTime time, int value) {
         this.time = time;
+        this.value = value;
     }
 
     public void setValue(int value) {
