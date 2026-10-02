@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -47,22 +49,21 @@ public class CardsUI {
 
     private JPanel makeJPanel(Card[] cards, String message, CardsUI card) {
         // make main JPanel
-        this.panel = new JPanel();
-        this.panel.setLayout(new BorderLayout());
+        this.panel = new JPanel(new GridLayout(4,0));
         panel.setPreferredSize(new Dimension(200, 700));
         // make title JPanel
         JPanel title = new JPanel();
         JLabel label = new JLabel("Cards");
         title.add(label);
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(title, BorderLayout.NORTH);
+        panel.add(title);
 
         // make game JPanel
         JPanel game = new JPanel();
-        game.setLayout(new GridLayout(3, 2));
+        game.setLayout(new GridLayout(2, 3));
         game.setPreferredSize(new Dimension(100, 500));
         game.setMaximumSize(new Dimension(100,500));
-        panel.add(game, BorderLayout.CENTER);
+        panel.add(game);
 
         // initialize buttons
         listiesOfButtonsies.clear();
@@ -82,9 +83,11 @@ public class CardsUI {
             this.statsArea = new TextArea();
         }
         this.statsArea.setText("Memorize the cards... \n");
-        panelsiesOfButtonsies.add(this.statsArea, BorderLayout.CENTER);
-
-        JPanel happybuttonsies = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel panelsiesOfButtonsies2=new JPanel();
+        statsArea.setSize(new Dimension(100,500));
+        panelsiesOfButtonsies2.add(this.statsArea);
+        panel.add(panelsiesOfButtonsies2);
+        JPanel happybuttonsies = new JPanel(new FlowLayout());
         this.continueahhh = new JButton("Next Round");
         this.continueahhh.setPreferredSize(new Dimension(100,100));
         this.continueahhh.setEnabled(false);
@@ -102,7 +105,9 @@ public class CardsUI {
                 button.addActionListener(f -> {
                     addGametoPanel(this.theMother);
                 });
-                theMother.add(button);
+                JPanel jeremy = new JPanel();
+                jeremy.add(button);
+                theMother.add(jeremy);
                 theMother.revalidate();
                 theMother.repaint();
             }
@@ -110,8 +115,8 @@ public class CardsUI {
 
         happybuttonsies.add(this.continueahhh);
         happybuttonsies.add(buttonofDeatttthhhh);
-        panelsiesOfButtonsies.add(happybuttonsies, BorderLayout.SOUTH);
-        panel.add(panelsiesOfButtonsies, BorderLayout.SOUTH);
+        panelsiesOfButtonsies.add(happybuttonsies);
+        panel.add(panelsiesOfButtonsies);
 
         return panel;
     }

@@ -182,6 +182,7 @@ public class MakeApp extends JFrame {
         smol.add(buttonMain);
         CardsUI cards = new CardsUI();
         JPanel big = new JPanel();
+        big.setLayout(new BoxLayout(big, BoxLayout.Y_AXIS));
         JButton button = new JButton("Play Cards");
         button.setPreferredSize(new Dimension(100,100));
         big.add(button);
