@@ -34,8 +34,8 @@ public class CardsGame {
         return cards;
     }
 
-    public boolean isCorrect(int c) {
-        return c == answer.getIndex();
+    public boolean isCorrect(Card c) {
+        return (c.getNum() == this.answer.getNum());
     }
 
     public int getScore() {
@@ -54,7 +54,8 @@ public class CardsGame {
 
     public int makeQuestion() {
         int t = randomInt(0, this.cards.length);
-        return t;
+        this.answer = this.cards[t];
+        return cards[t].getNum();
     }
 
     // public String makeQuestion() {
