@@ -51,26 +51,6 @@ public class MoodUI {
 
         content.add(small, BorderLayout.CENTER);
         JLabel label2 = new JLabel();
-        ImageIcon icon = new ImageIcon("/Users/lordkat/Desktop/CongressApp/src/main/resources/images/app_icon.png");
-        double ogheight = icon.getIconHeight();
-
-        int targetHeight = Math.max(1, 100);
-        int targetWidth = Math.max(1, 100);
-        double ratio = targetHeight / ogheight;
-        double ratio2 = targetWidth / (double) icon.getIconWidth();
-        int finalWidth;
-        int finalHeight;
-        if (ratio < ratio2) {
-            finalWidth = Math.max(1, (int) (icon.getIconWidth() * ratio));
-            finalHeight = targetHeight;
-        } else {
-            finalWidth = targetWidth;
-            finalHeight = Math.max(1, (int) (icon.getIconHeight() * ratio2));
-        }
-        Image image = icon.getImage().getScaledInstance(finalWidth, finalHeight, Image.SCALE_SMOOTH);
-        ImageIcon ion = new ImageIcon(image);
-        JButton button = new JButton(ion);
-        label2.add(button);
         label2.setPreferredSize(new Dimension(200, 200));
         content.add(label2, BorderLayout.SOUTH);
         panel.add(content, BorderLayout.CENTER);
