@@ -8,16 +8,17 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import com.baguetteisrotate.starling.Tracker;
-import com.baguetteisrotate.starling.games.CardEntry;
+import com.baguetteisrotate.starling.games.CardScoreEntry;
+import com.baguetteisrotate.starling.games.CardScoreEntry;
 import com.baguetteisrotate.starling.mood.MoodEntry;
 
 public class GraphUI {
     private final Tracker<MoodEntry> tracker;
-    private final Tracker<CardEntry> tracker2;
+    private final Tracker<CardScoreEntry> tracker2;
 
     public GraphUI() {
         tracker = new Tracker<>(Path.of("mood.json"), MoodEntry.class);
-        tracker2 = new Tracker<>(Path.of("cards_history.json"), CardEntry.class);
+        tracker2 = new Tracker<>(Path.of("cards_history.json"), CardScoreEntry.class);
     }
 
     public JPanel makePanel() {
@@ -26,8 +27,8 @@ public class GraphUI {
         List<MoodEntry> entries = tracker.loadData();
         Graph<MoodEntry> graph = new Graph<>("Mood over Time", "Date", "Mood", entries);
 
-        List<CardEntry> entries2 = tracker2.loadData();
-        Graph<CardEntry> graph2 = new Graph<>("Activity Performance over Time", "Date", "Score", entries2);
+        List<CardScoreEntry> entries2 = tracker2.loadData();
+        Graph<CardScoreEntry> graph2 = new Graph<>("Activity Performance over Time", "Date", "Score", entries2);
 
         JPanel chartPanel = graph.makePanel();
         JPanel chartPanel2 = graph2.makePanel();
