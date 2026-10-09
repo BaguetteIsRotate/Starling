@@ -17,7 +17,7 @@ public class GraphUI {
 
     public GraphUI() {
         tracker = new Tracker<>(Path.of("mood.json"), MoodEntry.class);
-        tracker2 = new Tracker<>(Path.of("cards.json"), CardEntry.class);
+        tracker2 = new Tracker<>(Path.of("cards_history.json"), CardEntry.class);
     }
 
     public JPanel makePanel() {

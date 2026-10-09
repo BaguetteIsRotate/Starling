@@ -9,7 +9,7 @@ import com.baguetteisrotate.starling.Tracker;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 public class CardEntry extends Entry {
-    private static final File FILE = new File("cards.json");
+    private static final File FILE = new File("cards_history.json");
     private static final TypeReference<HashMap<String, HashMap<String, Integer>>> FILE_TYPE = new TypeReference<>() {
     };
 
