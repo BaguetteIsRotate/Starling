@@ -10,7 +10,6 @@ public class CardsGame {
     private Card[] cards;
     private int currscore;
     private int currstreak;
-    private String currmessage;
 
     public CardsGame(int numCards, int lowBound, int highBound) {
         cards = makeCards(numCards, lowBound, highBound);

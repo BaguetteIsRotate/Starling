@@ -1,229 +1,199 @@
 package com.baguetteisrotate.starling.games;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.TextArea;
-import java.awt.FlowLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.awt.GridLayout;
+import java.nio.file.Path;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 
-import javax.swing.BoxLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
+import com.baguetteisrotate.starling.Tracker;
 import com.baguetteisrotate.starling.games.CardsGame.Card;
 
 public class CardsUI {
+    private static final Color PAGE_COLOR = new Color(255, 248, 231);
+
     private JPanel panel;
     private JPanel theMother;
-    private TextArea statsArea;
-    private JButton continueahhh;
-    private Card[] cards;
+    private JTextArea statsArea;
+    private JButton continueButton;
     private String currmessage;
-    private CardsUI x;
     private HashMap<String, Integer> statmap = CardEntry.load();
-    private ArrayList<JButton> listiesOfButtonsies = new ArrayList<>();
+    private final ArrayList<JButton> cardButtons = new ArrayList<>();
     private CardsGame currentGame;
+    private Timer memorizeTimer;
+    private final Tracker<CardScoreEntry> scoreTracker =
+            new Tracker<>(Path.of("cards_history.json"), CardScoreEntry.class);
 
-    /**
-     * 
-     * @return
-     */
     public JPanel getPanel() {
-        makeJPanel(cards, currmessage, x);
-        return panel;
-    }
-
-    private JPanel makeJPanel(Card[] cards, String message, CardsUI card) {
-        // make main JPanel
-        this.panel = new JPanel(new GridLayout(4,0));
-        panel.setPreferredSize(new Dimension(200, 700));
-        // make title JPanel
-        JPanel title = new JPanel();
-        JLabel label = new JLabel("Cards");
-        title.add(label);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(title);
-
-        // make game JPanel
-        JPanel game = new JPanel();
-        game.setLayout(new GridLayout(2, 3));
-        game.setPreferredSize(new Dimension(100, 500));
-        game.setMaximumSize(new Dimension(100,500));
-        panel.add(game);
-
-        // initialize buttons
-        listiesOfButtonsies.clear();
-        // currentGame = new CardsGame(6, 1, 20);
-        for (CardsGame.Card c : cards) {
-            JButton button = makeButton(c);
-            button.setPreferredSize(new Dimension(50,60));
-            button.setMaximumSize(new Dimension(50,60));
-            listiesOfButtonsies.add(button);
-            game.add(button);
-        }
-
-        // make stat JPanel
-        JPanel panelsiesOfButtonsies = new JPanel(new BorderLayout());
-
-        if (this.statsArea == null) {
-            this.statsArea = new TextArea();
-        }
-        this.statsArea.setText("Memorize the cards... \n");
-        JPanel panelsiesOfButtonsies2=new JPanel();
-        statsArea.setSize(new Dimension(100,500));
-        panelsiesOfButtonsies2.add(this.statsArea);
-        panel.add(panelsiesOfButtonsies2);
-        JPanel happybuttonsies = new JPanel(new FlowLayout());
-        this.continueahhh = new JButton("Next Round");
-        this.continueahhh.setPreferredSize(new Dimension(100,100));
-        this.continueahhh.setEnabled(false);
-        this.continueahhh.addActionListener(e -> {
-            updatePanel();
-        });
-
-        JButton buttonofDeatttthhhh = new JButton("End Current Game");
-        buttonofDeatttthhhh.setPreferredSize(new Dimension(100,100));
-        buttonofDeatttthhhh.addActionListener(e -> {
-            if (theMother != null) {
-                theMother.removeAll();
-                JButton button = new JButton("Play Cards");
-                button.setPreferredSize(new Dimension(100, 100));
-                button.addActionListener(f -> {
-                    addGametoPanel(this.theMother);
-                });
-                JPanel jeremy = new JPanel();
-                jeremy.add(button);
-                theMother.add(jeremy);
-                theMother.revalidate();
-                theMother.repaint();
-            }
-        });
-
-        happybuttonsies.add(this.continueahhh);
-        happybuttonsies.add(buttonofDeatttthhhh);
-        panelsiesOfButtonsies.add(happybuttonsies);
-        panel.add(panelsiesOfButtonsies);
-
-        return panel;
+        theMother = new JPanel(new BorderLayout());
+        showStartScreen();
+        return theMother;
     }
 
     /**
-     * Adds the game to a given JPanel and initializes the game.
-     * 
-     * @param panel2 the JPanel which the game is added to
+     * Shows the game in the supplied container, replacing its current contents.
+     *
+     * @param parent the container which will display the game
      */
-    public void addGametoPanel(JPanel panel2) {
-        this.theMother = panel2;
+    public void addGametoPanel(JPanel parent) {
+        theMother = Objects.requireNonNull(parent, "parent");
+        theMother.setLayout(new BorderLayout());
         statmap = CardEntry.load();
         statmap.put("total_games", statmap.get("total_games") + 1);
-
         updatePanel();
     }
 
+    public void resetToStart() {
+        if (theMother != null) {
+            showStartScreen();
+        }
+    }
+
+    private void showStartScreen() {
+        stopMemorizeTimer();
+        theMother.setLayout(new BorderLayout());
+        theMother.removeAll();
+        panel = null;
+
+        JButton playButton = new JButton("Play Cards");
+        playButton.setPreferredSize(new Dimension(180, 80));
+        playButton.addActionListener(e -> addGametoPanel(theMother));
+
+        JPanel launchPanel = new JPanel(new BorderLayout());
+        launchPanel.setBackground(PAGE_COLOR);
+        launchPanel.setBorder(BorderFactory.createEmptyBorder(32, 32, 32, 32));
+        launchPanel.add(playButton, BorderLayout.CENTER);
+        theMother.add(launchPanel, BorderLayout.CENTER);
+        theMother.revalidate();
+        theMother.repaint();
+    }
+
     private void updatePanel() {
+        stopMemorizeTimer();
         currentGame = new CardsGame(6, 1, 20);
         currmessage = "Which card had the number " + currentGame.makeQuestion() + "?";
+        panel = makeGamePanel(currentGame.getCards());
 
-        if (theMother != null) {
-            if (this.panel != null) {
-                theMother.remove(this.panel);
-            }
-            this.panel = makeJPanel(currentGame.getCards(), currmessage, this);
-            theMother.add(this.panel);
-            theMother.revalidate();
-            theMother.repaint();
+        theMother.removeAll();
+        theMother.add(panel, BorderLayout.CENTER);
+        theMother.revalidate();
+        theMother.repaint();
 
-            startTheBomb();
-        }
+        startMemorizeTimer();
     }
 
-    public void screamOutTheStatsPlease(String whoDied) {
-        if (this.statsArea != null) {
-            this.statsArea.setText(whoDied + "\n Score: "
-                    + this.statmap.getOrDefault("curr_score",0) + "\n Streak: " + this.statmap.getOrDefault("curr_streak",0) + "\n Highest Score:"
-                    + statmap.get("highest_score") + "\n Highest Streak: " + statmap.get("highest_streak"));
+    private JPanel makeGamePanel(Card[] cards) {
+        JPanel gamePanel = new JPanel(new BorderLayout(0, 16));
+        gamePanel.setBackground(PAGE_COLOR);
+        gamePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel title = new JLabel("Cards", SwingConstants.CENTER);
+        gamePanel.add(title, BorderLayout.NORTH);
+
+        JPanel cardGrid = new JPanel(new GridLayout(2, 3, 12, 12));
+        cardGrid.setBackground(PAGE_COLOR);
+        cardGrid.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));
+        cardButtons.clear();
+        for (Card card : cards) {
+            JButton button = makeButton(card);
+            cardButtons.add(button);
+            cardGrid.add(button);
         }
-        if (this.continueahhh != null) {
-            this.continueahhh.setEnabled(true);
-        }
+        gamePanel.add(cardGrid, BorderLayout.CENTER);
+
+        statsArea = new JTextArea(5, 20);
+        statsArea.setEditable(false);
+        statsArea.setLineWrap(true);
+        statsArea.setWrapStyleWord(true);
+        statsArea.setText(getStatsText("Memorize the cards..."));
+        JScrollPane statsScrollPane = new JScrollPane(statsArea);
+        statsScrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        continueButton = new JButton("Next Round");
+        continueButton.setEnabled(false);
+        continueButton.addActionListener(e -> updatePanel());
+
+        JButton endButton = new JButton("End Game");
+        endButton.addActionListener(e -> showStartScreen());
+
+        JPanel controls = new JPanel(new GridLayout(1, 2, 12, 0));
+        controls.setBackground(PAGE_COLOR);
+        controls.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 0));
+        controls.add(continueButton);
+        controls.add(endButton);
+
+        JPanel footer = new JPanel(new BorderLayout(0, 8));
+        footer.setBackground(PAGE_COLOR);
+        footer.add(statsScrollPane, BorderLayout.CENTER);
+        footer.add(controls, BorderLayout.SOUTH);
+        gamePanel.add(footer, BorderLayout.SOUTH);
+        return gamePanel;
     }
 
-    private void startTheBomb() {
-        for (JButton bhutan : listiesOfButtonsies) {
-            bhutan.setEnabled(false);
+    private void startMemorizeTimer() {
+        for (JButton button : cardButtons) {
+            button.setEnabled(false);
         }
 
-        Timer timer = new Timer(10000, e -> {
-            for (JButton bhutan : listiesOfButtonsies) {
-                bhutan.setText("?");
-                bhutan.setEnabled(true);
+        memorizeTimer = new Timer(10000, e -> {
+            for (JButton button : cardButtons) {
+                button.setText("?");
+                button.setEnabled(true);
             }
-            if (this.statsArea != null) {
-                this.statsArea.setText(currmessage + "\n Score: "
-                        + this.statmap.getOrDefault("curr_score",0) + "\n Streak: " + this.statmap.getOrDefault("curr_streak",0) + "\n Highest Score:"
-                        + statmap.get("highest_score") + "\n Highest Streak: " + statmap.get("highest_streak"));
-            }
+            statsArea.setText(getStatsText(currmessage));
         });
-        timer.setRepeats(false);
-        timer.start();
+        memorizeTimer.setRepeats(false);
+        memorizeTimer.start();
     }
 
-    public JButton makeButton(CardsGame.Card card) {
-        JButton button = new JButton(String.valueOf(card.getNum()));
-        button.setPreferredSize(new Dimension(50, 75));
-        button.setMaximumSize(new Dimension(50,75));
-        button.addActionListener(e -> {
-            String outcome = "";
-            if (currentGame.isCorrect(card)) {
-                outcome = "Correct! ";
-                CardEntry.update(statmap, true);
-            } else {
-                outcome = "Incorrect! ";
-                CardEntry.update(statmap, false);
-            }
-            button.setText(String.valueOf(card.getNum()));
-            int currscore = statmap.getOrDefault("curr_score", 0);
-            if (currscore > statmap.get("highest_score")) {
-                statmap.put("highest_score", currscore);
-            }
-            statmap.put("curr_score", currscore);
+    private void stopMemorizeTimer() {
+        if (memorizeTimer != null) {
+            memorizeTimer.stop();
+            memorizeTimer = null;
+        }
+    }
 
-            int currstreak = statmap.getOrDefault("curr_streak",0);
-            statmap.put("curr_streak", currstreak);
-            if (statmap.get("highest_streak") < currstreak) {
-                statmap.put("highest_streak", currstreak);
+    private String getStatsText(String message) {
+        return message + "\nScore: " + statmap.getOrDefault("curr_score", 0)
+                + "\nStreak: " + statmap.getOrDefault("curr_streak", 0)
+                + "\nHighest score: " + statmap.getOrDefault("highest_score", 0)
+                + "\nHighest streak: " + statmap.getOrDefault("highest_streak", 0);
+    }
+
+    public JButton makeButton(Card card) {
+        JButton button = new JButton(String.valueOf(card.getNum()));
+        button.addActionListener(e -> {
+            boolean correct = currentGame.isCorrect(card);
+            CardEntry.update(statmap, correct);
+
+            for (int i = 0; i < cardButtons.size(); i++) {
+                JButton cardButton = cardButtons.get(i);
+                cardButton.setText(String.valueOf(currentGame.getCards()[i].getNum()));
+                cardButton.setEnabled(false);
             }
+
             CardEntry stats = new CardEntry();
             stats.set(statmap);
             stats.save();
-            screamOutTheStatsPlease(outcome);
-            if (panel != null) {
-                for (java.awt.Component comp : panel.getComponents()) {
-                    if (comp instanceof JPanel) {
-                        for (java.awt.Component internalComp : ((JPanel) comp).getComponents()) {
-                            if (internalComp instanceof JButton
-                                    && !"Next Round".equals(((JButton) internalComp).getText())
-                                    && !"End Current Game".equals(((JButton) internalComp).getText())) {
-                                internalComp.setEnabled(false);
-                            }
-                        }
-                    }
-                }
-            }
+            List<CardScoreEntry> scoreHistory = scoreTracker.loadData();
+            scoreHistory.add(new CardScoreEntry(ZonedDateTime.now(), statmap.get("curr_score")));
+            scoreTracker.save(scoreHistory);
+            statsArea.setText(getStatsText(correct ? "Correct!" : "Incorrect!"));
+            continueButton.setEnabled(true);
         });
         return button;
     }

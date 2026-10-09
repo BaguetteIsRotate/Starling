@@ -59,9 +59,6 @@ public class Graph<T extends Entry> {
     private String ylabel;
     private String title;
     private List<T> entries;
-    private HashMap<String, Object> map = new HashMap<>();
-    private String path = "";
-
     // constructor method with input values
     public Graph(String title, String xlabel, String ylabel,
             List<T> entries) {

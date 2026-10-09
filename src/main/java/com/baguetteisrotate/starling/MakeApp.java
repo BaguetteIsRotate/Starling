@@ -1,27 +1,44 @@
 package com.baguetteisrotate.starling;
 
-import javax.swing.*;
-
-import com.baguetteisrotate.starling.games.CardsUI;
-import com.baguetteisrotate.starling.Tracker;
-import com.baguetteisrotate.starling.mood.MoodUI;
-import com.baguetteisrotate.starling.graphing.GraphUI;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.LayoutManager;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+
+import com.baguetteisrotate.starling.games.CardsUI;
+import com.baguetteisrotate.starling.graphing.GraphUI;
+import com.baguetteisrotate.starling.mood.MoodUI;
 
 public class MakeApp extends JFrame {
-    JFrame app;
+    // Cosmic Latte (#FFF8E7)
+    private static final Color PAGE_COLOR = new Color(255, 248, 231);
+    private static final Border PAGE_PADDING = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+
+    private final Map<String, ImageIcon> iconCache = new HashMap<>();
+
     JPanel pageMain;
     JPanel pageOne;
     JPanel pageTwo;
@@ -32,255 +49,151 @@ public class MakeApp extends JFrame {
     JPanel pageInfoC;
     JPanel pageInfoD;
 
+    JPanel pageInfoE;
+    private CardsUI cardsUI;
+
     public MakeApp() {
-        // make JFrame
         super("Starling");
-        // make title
         setSize(393, 793);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
 
         pageOne = PageOne();
         pageTwo = PageTwo();
-        pageThree = PageThree();
         pageFour = PageFour();
         pageMain = PageMain();
-        JPanel page = new JPanel();
-        pageInfoA = PageInfo("/text/text1.txt", "What is Alzheimer's Disease?",page);
-        JPanel page2 = new JPanel();
-        pageInfoB = PageInfo("/text/text2.txt", "Onset and Early Symptoms of Alzheimer's",page2);
-        JPanel page3 = new JPanel();
-        pageInfoC = PageInfo("/text/text3.txt", "Middle-Stage Alzheimer's and Late-Stage ALzheimers",page3);
-        JPanel page4 = new JPanel();
-        pageInfoD = PageInfo("/text/text4.txt", "Preventative measures against Alzheimer's symptons", page4);
+
+        pageInfoA = PageInfo("/text/text1.txt", "What is Alzheimer's Disease?", new JPanel());
+        pageInfoB = PageInfo("/text/text2.txt", "Onset and Early Symptoms of Alzheimer's", new JPanel());
+        pageInfoC = PageInfo("/text/text3.txt", "Middle-Stage Alzheimer's",
+                new JPanel());
+        pageInfoD = PageInfo("/text/text4.txt", "Late-Stage Alzheimer's",
+                new JPanel());
+
+        pageInfoE = PageInfo("/text/text5.txt", "What Does this App Do?",
+                new JPanel());
         add(pageMain);
-        revalidate();
     }
 
     public JPanel PageMain() {
-        JPanel page = new JPanel();
-        Color color = new Color(255, 248, 231);
-        page.setBackground(color);
-        JPanel smol = new JPanel();
-        smol.setBackground(color);
-        page.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        smol.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        JPanel top = new JPanel();
-        top.setLayout(new BorderLayout());
-        ImageIcon title = resizeImageIcon("/images/app_title.png", 90, page.getWidth() / 3);
-        JLabel pondering = new JLabel(title);
-        pondering.setSize(150, 75);
-        pondering.setBackground(color);
-        JPanel top1 = new JPanel();
-        JLabel pondering2 = new JLabel("An app for Alzheimer's patients");
-        smol.setLayout(new GridLayout(2, 1));
+        JPanel page = makeColoredPanel();
+        page.setBorder(PAGE_PADDING);
         page.setLayout(new BorderLayout());
-        pondering.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton button1 = makeButton("/images/happy_icon.png", 200, 100, 80, page.getWidth() / 4, page);
-        smol.add(button1);
-        top.setBackground(color);
-        JButton button4 = makeButton("/images/record_icon.png", 200, 100, 80, page.getWidth() / 4, page);
-        smol.add(button4);
-        top.setBackground(color);
-        JPanel top2 = new JPanel();
-        top1.setBackground(color);
-        top2.setBackground(color);
 
-        JButton button2 = makeButton("/images/info_icon.png", 70, 70, 60, page.getWidth() / 3, page);
-        top2.add(button2);
-        top.add(top2, BorderLayout.WEST);
-        top1.add(pondering);
-        top.add(top1, BorderLayout.CENTER);
-        button1.addActionListener(e -> {
-            remove(pageMain);
-            add(pageOne);
-            revalidate();
-            repaint();
-        });
-
-        JPanel top3 = new JPanel();
-        top3.setBackground(color);
-        JButton button3 = makeButton("/images/graph_icon.png", 70, 70, 60, page.getWidth() / 3, page);
-        top3.add(button3);
-        top.add(top3, BorderLayout.EAST);
-        button3.addActionListener(e -> {
-            remove(pageMain);
-            pageThree = PageThree();
-            add(pageThree);
-            revalidate();
-            repaint();
-        });
+        JPanel top = buildMainTopBar(page);
+        JPanel activityPanel = buildMainActivityPanel(page);
+        JLabel subtitle = new JLabel("An app for Alzheimer's patients");
+        subtitle.setHorizontalAlignment(SwingConstants.CENTER);
 
         page.add(top, BorderLayout.NORTH);
-        pondering.addComponentListener(new ComponentAdapter() {
+        page.add(activityPanel, BorderLayout.CENTER);
+        page.add(subtitle, BorderLayout.SOUTH);
+        return page;
+    }
+
+    private JPanel buildMainTopBar(JPanel page) {
+        JPanel top = makeColoredPanel();
+        top.setLayout(new BorderLayout());
+
+        JPanel left = makeColoredPanel();
+        JButton infoButton = makeButton("/images/info_icon.png", 70, 70, 60, page.getWidth() / 3, page);
+        infoButton.addActionListener(e -> showPage(page, pageTwo));
+        left.add(infoButton);
+
+        JPanel center = makeColoredPanel();
+        JLabel titleLabel = new JLabel(resizeImageIcon("/images/app_title.png", 90, page.getWidth() / 3));
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        center.add(titleLabel);
+        titleLabel.addComponentListener(new ComponentAdapter() {
+            @Override
             public void componentResized(ComponentEvent e) {
-                ImageIcon title1 = resizeImageIcon("/images/app_title.png",
-                        (page.getHeight() / 6), page.getWidth() / 2);
-                pondering.setIcon(title1);
+                titleLabel.setIcon(resizeImageIcon("/images/app_title.png",
+                        page.getHeight() / 6, page.getWidth() / 2));
             }
         });
-        button2.addActionListener(e -> {
-            remove(pageMain);
-            add(pageTwo);
-            revalidate();
-            repaint();
+
+        JPanel right = makeColoredPanel();
+        JButton graphButton = makeButton("/images/graph_icon.png", 70, 70, 60, page.getWidth() / 3, page);
+        graphButton.addActionListener(e -> {
+            pageThree = PageThree();
+            showPage(page, pageThree);
         });
-        button4.addActionListener(e -> {
-            remove(pageMain);
-            add(pageFour);
-            revalidate();
-            repaint();
-        });
-        page.add(smol, BorderLayout.CENTER);
-        page.add(pondering2, BorderLayout.SOUTH);
-        pondering2.setHorizontalAlignment(SwingConstants.CENTER);
-        return page;
+        right.add(graphButton);
+
+        top.add(left, BorderLayout.WEST);
+        top.add(center, BorderLayout.CENTER);
+        top.add(right, BorderLayout.EAST);
+        return top;
+    }
+
+    private JPanel buildMainActivityPanel(JPanel page) {
+        JPanel panel = makeColoredPanel();
+        panel.setBorder(PAGE_PADDING);
+        panel.setLayout(new GridLayout(2, 1));
+
+        JButton cardsButton = makeButton("/images/happy_icon.png", 200, 100, 80, page.getWidth() / 4, page);
+        cardsButton.addActionListener(e -> showPage(page, pageOne));
+        JButton moodButton = makeButton("/images/record_icon.png", 200, 100, 80, page.getWidth() / 4, page);
+        moodButton.addActionListener(e -> showPage(page, pageFour));
+
+        panel.add(cardsButton);
+        panel.add(moodButton);
+        return panel;
     }
 
     public JButton makeButton(String iconPath, int x, int y, int imgx, int imgy, JPanel page) {
-        JButton button = new JButton();
-        button.setPreferredSize(new Dimension(x, y));
-        ImageIcon icon = resizeImageIcon(iconPath, imgy, imgx);
-        button.setIcon(icon);
-        button.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                ImageIcon icon = resizeImageIcon(iconPath, (button.getHeight() / 4),
-                        button.getWidth() / 4);
-                button.setIcon(icon);
-            }
-        });
-        return button;
+        return makeIconButton(iconPath, x, y, imgx, imgy, 4);
     }
 
     public JPanel PageOne() {
-        JPanel page = new JPanel();
-        Color color = new Color(255, 248, 231);
-        page.setBackground(color);
-        JPanel smol = new JPanel();
-        page.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        smol.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        smol.setBackground(color);
-        JButton buttonMain = new JButton();
-        buttonMain.setPreferredSize(new Dimension(100, 100));
-        ImageIcon icon = resizeImageIcon("/images/main_icon.png", 50, buttonMain.getWidth());
-        buttonMain.setIcon(icon);
-        buttonMain.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                ImageIcon icon = resizeImageIcon("/images/main_icon.png", (buttonMain.getHeight() / 2),
-                        buttonMain.getWidth() / 2);
-                buttonMain.setIcon(icon);
-            }
-        });
-        buttonMain.addActionListener(e -> {
-            remove(pageOne);
-            add(pageMain);
-            revalidate();
-            repaint();
-        });
-        smol.setLayout(new BorderLayout());
-        smol.add(buttonMain);
-        CardsUI cards = new CardsUI();
-        JPanel big = new JPanel();
-        big.setLayout(new BoxLayout(big, BoxLayout.Y_AXIS));
-        JButton button = new JButton("Play Cards");
-        button.setPreferredSize(new Dimension(100,100));
-        big.add(button);
-        button.addActionListener(e -> {
-            cards.addGametoPanel(big);
-        });
-        page.setLayout(new BorderLayout());
-
-        page.add(smol, BorderLayout.NORTH);
-
-        page.add(big, BorderLayout.CENTER);
-
-        return page;
+        cardsUI = new CardsUI();
+        return makeBackPage(new BorderLayout(), cardsUI.getPanel());
     }
 
     public JPanel PageTwo() {
-        JPanel page = new JPanel();
-        JPanel smol = new JPanel();
-
-        smol.setLayout(new BorderLayout());
+        JPanel page = makeColoredPanel();
         page.setLayout(new BorderLayout());
-        JButton buttonMain = new JButton();
-        buttonMain.setPreferredSize(new Dimension(100, 100));
-        ImageIcon icon = resizeImageIcon("/images/main_icon.png", 50, buttonMain.getWidth());
-        buttonMain.setIcon(icon);
-        buttonMain.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                ImageIcon icon = resizeImageIcon("/images/main_icon.png", (buttonMain.getHeight() / 2),
-                        buttonMain.getWidth() / 2);
-                buttonMain.setIcon(icon);
-            }
-        });
-        buttonMain.addActionListener(e -> {
-            remove(pageTwo);
-            add(pageMain);
-            revalidate();
-            repaint();
-        });
-
+        page.setBorder(PAGE_PADDING);
+        JButton buttonMain = makeMainButton(page);
         page.add(buttonMain, BorderLayout.NORTH);
-        buttonMain.setHorizontalAlignment(SwingConstants.CENTER);
-        page.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        smol.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        Color color = new Color(255, 248, 231);
-        page.setBackground(color);
-        smol.setBackground(color);
+        JPanel smol = makeColoredPanel();
+        smol.setLayout(new BorderLayout());
+        smol.setBorder(PAGE_PADDING);
         JLabel pondering = new JLabel("Information");
         smol.add(pondering, BorderLayout.NORTH);
         pondering.setHorizontalAlignment(SwingConstants.CENTER);
-        JTextArea text = new JTextArea();
-        smol.add(text);
-        text.setEditable(true);
-        text.setLineWrap(true);
-        JPanel smolsmol = new JPanel();
-        smolsmol.setLayout(new GridLayout(4, 1));
-        JButton buttonA = new JButton("What is Alzheimer's Disease?");
+
+        JPanel smolsmol = makeColoredPanel();
+        smolsmol.setLayout(new GridLayout(5, 1));
+        JButton buttonA = makeTextButton("What is Alzheimer's Disease?");
+        JButton buttonB = makeTextButton("Onset and Early Symptoms of Alzheimer's");
+        JButton buttonC = makeTextButton("Middle-Stage Alzheimer's");
+        JButton buttonD = makeTextButton("Late-Stage Alzheimer's");
+        JButton buttonE = makeTextButton("What Does this App Do?");
         smolsmol.add(buttonA);
-        buttonA.setPreferredSize(new Dimension(300, 100));
-        JButton buttonB = new JButton("B");
         smolsmol.add(buttonB);
-        buttonB.setPreferredSize(new Dimension(300, 100));
-        JButton buttonC = new JButton("C");
         smolsmol.add(buttonC);
-        buttonC.setPreferredSize(new Dimension(300, 100));
-        JButton buttonD = new JButton("D");
-        buttonD.setPreferredSize(new Dimension(300, 100));
         smolsmol.add(buttonD);
-        smolsmol.setBackground(color);
+        smolsmol.add(buttonE);
+        buttonA.setPreferredSize(new Dimension(50,300));
+
+        buttonB.setPreferredSize(new Dimension(50,300));
+
+        buttonC.setPreferredSize(new Dimension(50,300));
+
+        buttonD.setPreferredSize(new Dimension(50,300));
+
+        buttonE.setPreferredSize(new Dimension(50,300));
         JScrollPane pane = new JScrollPane(smolsmol, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        smol.add(pane);
-        buttonA.addActionListener(e -> {
-            remove(pageTwo);
-            add(pageInfoA);
-            revalidate();
-            repaint();
-        });
+        smol.add(pane, BorderLayout.CENTER);
 
-        buttonB.addActionListener(e -> {
-            remove(pageTwo);
-            add(pageInfoB);
-            revalidate();
-            repaint();
-        });
-
-        buttonC.addActionListener(e -> {
-            remove(pageTwo);
-            add(pageInfoC);
-            revalidate();
-            repaint();
-        });
-        buttonD.addActionListener(e -> {
-            remove(pageTwo);
-            add(pageInfoD);
-            revalidate();
-            repaint();
-        });
+        buttonA.addActionListener(e -> showPage(page, pageInfoA));
+        buttonB.addActionListener(e -> showPage(page, pageInfoB));
+        buttonC.addActionListener(e -> showPage(page, pageInfoC));
+        buttonD.addActionListener(e -> showPage(page, pageInfoD));
+        buttonE.addActionListener(e -> showPage(page, pageInfoE));
         page.add(smol, BorderLayout.CENTER);
         return page;
     }
@@ -288,157 +201,49 @@ public class MakeApp extends JFrame {
     public JPanel PageThree() {
         GraphUI tracker = new GraphUI();
         JPanel graph = tracker.makePanel();
-        JPanel page = new JPanel(new BorderLayout());
-        Color color = new Color(255, 248, 231);
-        page.setBackground(color);
-        JPanel smol = new JPanel();
-        page.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        smol.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        smol.setBackground(color);
-        JButton buttonMain = new JButton();
-        buttonMain.setPreferredSize(new Dimension(100, 100));
-        ImageIcon icon = resizeImageIcon("/images/main_icon.png", 50, buttonMain.getWidth());
-        buttonMain.setIcon(icon);
-        buttonMain.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                ImageIcon icon = resizeImageIcon("/images/main_icon.png", (buttonMain.getHeight() / 2),
-                        buttonMain.getWidth() / 2);
-                buttonMain.setIcon(icon);
-            }
-        });
-        buttonMain.addActionListener(e -> {
-            remove(pageThree);
-            pageThree.repaint();
-            add(pageMain);
-            revalidate();
-            repaint();
-        });
-        smol.setLayout(new BorderLayout());
-        smol.add(buttonMain);
-        page.add(smol, BorderLayout.NORTH);
-        page.add(graph, BorderLayout.CENTER);
-        return page;
+        return makeBackPage(new BorderLayout(), graph);
     }
 
     public JPanel PageFour() {
-
         MoodUI tracker = new MoodUI();
-        JPanel graph = tracker.makePanel();
-        JPanel page = new JPanel();
-        Color color = new Color(255, 248, 231);
-        page.setBackground(color);
-        JPanel smol = new JPanel();
-        page.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        smol.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        smol.setBackground(color);
-        JButton buttonMain = new JButton();
-        buttonMain.setPreferredSize(new Dimension(100, 100));
-        ImageIcon icon = resizeImageIcon("/images/main_icon.png", 50, buttonMain.getWidth());
-        buttonMain.setIcon(icon);
-        buttonMain.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                ImageIcon icon = resizeImageIcon("/images/main_icon.png", (buttonMain.getHeight() / 2),
-                        buttonMain.getWidth() / 2);
-                buttonMain.setIcon(icon);
-            }
-        });
-        buttonMain.addActionListener(e -> {
-            remove(pageFour);
-            add(pageMain);
-            revalidate();
-            repaint();
-        });
-        smol.setLayout(new BorderLayout());
-        smol.add(buttonMain);
-        page.add(smol, BorderLayout.NORTH);
-        page.add(graph, BorderLayout.CENTER);
-        return page;
+        JPanel moodPanel = tracker.makePanel();
+        return makeBackPage(new BorderLayout(), moodPanel);
     }
 
     public JPanel PageInfo(String path, String title, JPanel page) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        Color color = new Color(255, 248, 231);
-        page.setBackground(color);
-        JPanel smol = new JPanel();
-        page.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        smol.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        smol.setBackground(color);
-        JPanel smol2 = new JPanel();
-        panel.setBackground(color);
-        smol2.setBackground(color);
-        JLabel pondering = new JLabel(title);
-        smol2.setLayout(new BorderLayout());
-        smol.setLayout(new BorderLayout());
+        page.setBackground(PAGE_COLOR);
+        page.setBorder(PAGE_PADDING);
         page.setLayout(new BorderLayout());
-        smol2.add(pondering, BorderLayout.NORTH);
+
+        JPanel smol = makeColoredPanel();
+        smol.setBorder(PAGE_PADDING);
+        smol.setLayout(new BorderLayout());
+
+        JPanel smol2 = makeColoredPanel();
+        smol2.setLayout(new BorderLayout());
+        JLabel pondering = new JLabel(title);
         pondering.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton buttonMain = new JButton();
+        smol2.add(pondering, BorderLayout.NORTH);
+
+        JPanel panel = makeColoredPanel();
+        JButton buttonMain = makeMainButton(page);
         panel.add(buttonMain);
-        buttonMain.setPreferredSize(new Dimension(100, 100));
-        ImageIcon icon = resizeImageIcon("/images/main_icon.png", 50, buttonMain.getWidth());
-        buttonMain.setIcon(icon);
-        buttonMain.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                ImageIcon icon = resizeImageIcon("/images/main_icon.png", (buttonMain.getHeight() / 2),
-                        buttonMain.getWidth() / 2);
-                buttonMain.setIcon(icon);
-            }
-        });
-        buttonMain.addActionListener(e -> {
-            remove(page);
-            add(pageMain);
-            revalidate();
-            repaint();
-        });
-
-        JButton button2 = new JButton();
-        panel.add(button2, BorderLayout.EAST);
-        button2.setSize(200, 100);
-        ImageIcon icon2 = resizeImageIcon("/images/info_icon.png", 50, 50);
-        button2.setIcon(icon2);
-        button2.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                ImageIcon icon = resizeImageIcon("/images/info_icon.png", (button2.getHeight() / 2),
-                        button2.getWidth() / 2);
-                button2.setIcon(icon);
-            }
-        });
-        button2.addActionListener(e -> {
-            remove(page);
-            add(pageTwo);
-            revalidate();
-            repaint();
-        });
-        button2.setPreferredSize(new Dimension(100, 100));
-
-        buttonMain.setHorizontalAlignment(SwingConstants.CENTER);
-        button2.setHorizontalAlignment(SwingConstants.CENTER);
+        JButton button2 = makeIconButton("/images/info_icon.png", 100, 100, 50, 50, 2);
+        button2.addActionListener(e -> showPage(page, pageTwo));
+        panel.add(button2);
         smol2.add(panel, BorderLayout.SOUTH);
         smol.add(smol2, BorderLayout.NORTH);
+
         JTextArea text = new JTextArea();
         JScrollPane pane = new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         text.setLineWrap(true);
-        try {
-
-            InputStream input = getClass().getResourceAsStream(path);
+        try (InputStream input = getClass().getResourceAsStream(path)) {
             if (input == null) {
-                throw new IOException();
+                throw new IOException("Resource not found: " + path);
             }
-
-            String x = new String(input.readAllBytes());
-            text.append(x);
-            input.close();
-
-            // FileReader reader = new FileReader(path);
-            // String x = Files.readString(Path.of(path));
-            // String[] a = x.split("\\n");
-            // for (int i = 0; i < a.length; i++) {
-            // text.append(a[i] + "\n" + "\n");
-            // }
-            // reader.close();
-
-        } catch (Exception e) {
+            text.setText(new String(input.readAllBytes(), StandardCharsets.UTF_8));
+        } catch (IOException e) {
             text.setText("File not found");
         }
         text.setEditable(false);
@@ -449,11 +254,15 @@ public class MakeApp extends JFrame {
     }
 
     public ImageIcon resizeImageIcon(String path, int height, int width) {
-        URL resource = getClass().getResource(path);
-        if (resource == null) {
-            return new ImageIcon();
+        ImageIcon icon = iconCache.get(path);
+        if (icon == null) {
+            URL resource = getClass().getResource(path);
+            if (resource == null) {
+                return new ImageIcon();
+            }
+            icon = new ImageIcon(resource);
+            iconCache.put(path, icon);
         }
-        ImageIcon icon = new ImageIcon(resource);
 
         double ogheight = icon.getIconHeight();
         if (ogheight <= 0 || icon.getIconWidth() <= 0)
@@ -462,15 +271,80 @@ public class MakeApp extends JFrame {
         int targetWidth = Math.max(1, width);
         double ratio = targetHeight / ogheight;
         double ratio2 = targetWidth / (double) icon.getIconWidth();
+        int finalWidth;
+        int finalHeight;
         if (ratio < ratio2) {
-            int finalWidth = Math.max(1, (int) (icon.getIconWidth() * ratio));
-            Image image = icon.getImage().getScaledInstance(finalWidth, targetHeight, Image.SCALE_SMOOTH);
-            return new ImageIcon(image);
+            finalWidth = Math.max(1, (int) (icon.getIconWidth() * ratio));
+            finalHeight = targetHeight;
         } else {
-            int finalHeight = Math.max(1, (int) (icon.getIconHeight() * ratio2));
-            Image image = icon.getImage().getScaledInstance(targetWidth, finalHeight, Image.SCALE_SMOOTH);
-            return new ImageIcon(image);
+            finalWidth = targetWidth;
+            finalHeight = Math.max(1, (int) (icon.getIconHeight() * ratio2));
         }
+        Image image = icon.getImage().getScaledInstance(finalWidth, finalHeight, Image.SCALE_SMOOTH);
+        return new ImageIcon(image);
     }
 
+    // ---- shared helpers ----
+
+    private JPanel makeColoredPanel() {
+        JPanel panel = new JPanel();
+        panel.setBackground(PAGE_COLOR);
+        return panel;
+    }
+
+    private void showPage(JPanel from, JPanel to) {
+        remove(from);
+        add(to);
+        revalidate();
+        repaint();
+    }
+
+    /** A button whose icon is rescaled to (height / divisor, width / divisor) whenever it is resized. */
+    private JButton makeIconButton(String iconPath, int x, int y, int imgx, int imgy, int divisor) {
+        JButton button = new JButton();
+        button.setPreferredSize(new Dimension(x, y));
+        button.setIcon(resizeImageIcon(iconPath, imgy, imgx));
+        button.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                button.setIcon(resizeImageIcon(iconPath, button.getHeight() / divisor,
+                        button.getWidth() / divisor));
+            }
+        });
+        return button;
+    }
+
+    /** The "home" button that returns from the given page to pageMain. */
+    private JButton makeMainButton(JPanel from) {
+        JButton button = makeIconButton("/images/main_icon.png", 100, 100, 50, 50, 2);
+        button.addActionListener(e -> {
+            if (from == pageOne && cardsUI != null) {
+                cardsUI.resetToStart();
+            }
+            showPage(from, pageMain);
+        });
+        return button;
+    }
+
+    private JButton makeTextButton(String label) {
+        JButton button = new JButton(label);
+        button.setPreferredSize(new Dimension(300, 100));
+        return button;
+    }
+
+    /** Page with a home button along the top and the given content filling the rest. */
+    private JPanel makeBackPage(LayoutManager layout, JComponent content) {
+        JPanel page = makeColoredPanel();
+        page.setLayout(layout);
+        page.setBorder(PAGE_PADDING);
+
+        JPanel smol = makeColoredPanel();
+        smol.setLayout(new BorderLayout());
+        smol.setBorder(PAGE_PADDING);
+        smol.add(makeMainButton(page), BorderLayout.CENTER);
+
+        page.add(smol, BorderLayout.NORTH);
+        page.add(content, BorderLayout.CENTER);
+        return page;
+    }
 }

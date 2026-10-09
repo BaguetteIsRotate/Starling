@@ -1,76 +1,94 @@
 package com.baguetteisrotate.starling.mood;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Image;
+import java.net.URL;
+import java.nio.file.Path;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
-import java.nio.file.Path;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.baguetteisrotate.starling.graphing.Graph;
 import com.baguetteisrotate.starling.Tracker;
-import com.baguetteisrotate.starling.Entry;
 
 public class MoodUI {
     private final Tracker<MoodEntry> tracker;
     private final List<MoodEntry> entries;
 
     private JPanel panel;
-    private JPanel visual;
 
     public MoodUI() {
-        tracker = new Tracker<MoodEntry>(Path.of("mood.json"), MoodEntry.class); 
+        tracker = new Tracker<>(Path.of("mood.json"), MoodEntry.class);
         entries = new ArrayList<>(tracker.loadData());
     }
 
     public JPanel makePanel() {
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        panel = new JPanel(new BorderLayout());
         showButtonsies();
         return panel;
-}
+    }
 
     public void showButtonsies() {
-        JPanel content = new JPanel(new BorderLayout(0, 20));
+        panel.removeAll();
 
+        JPanel content = new JPanel(new BorderLayout(0, 20));
         content.setBorder(BorderFactory.createEmptyBorder(30, 30, 20, 30));
 
         JLabel label = new JLabel("Rate your day on a scale of 1-5!", JLabel.CENTER);
-        content.add(label, BorderLayout.CENTER);
+        content.add(label, BorderLayout.NORTH);
 
-        JPanel small = new JPanel();
-        small.setLayout(new GridLayout(1, 5));
-
+        JPanel small = new JPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
         for (int i = 1; i <= 5; i++) {
             small.add(makeButton(i));
         }
 
-        content.add(small, BorderLayout.SOUTH); 
+        content.add(small, BorderLayout.CENTER);
+        JLabel label2 = new JLabel();
+        ImageIcon icon = new ImageIcon("/Users/lordkat/Desktop/CongressApp/src/main/resources/images/app_icon.png");
+        double ogheight = icon.getIconHeight();
+
+        int targetHeight = Math.max(1, 100);
+        int targetWidth = Math.max(1, 100);
+        double ratio = targetHeight / ogheight;
+        double ratio2 = targetWidth / (double) icon.getIconWidth();
+        int finalWidth;
+        int finalHeight;
+        if (ratio < ratio2) {
+            finalWidth = Math.max(1, (int) (icon.getIconWidth() * ratio));
+            finalHeight = targetHeight;
+        } else {
+            finalWidth = targetWidth;
+            finalHeight = Math.max(1, (int) (icon.getIconHeight() * ratio2));
+        }
+        Image image = icon.getImage().getScaledInstance(finalWidth, finalHeight, Image.SCALE_SMOOTH);
+        ImageIcon ion = new ImageIcon(image);
+        JButton button = new JButton(ion);
+        label2.add(button);
+        label2.setPreferredSize(new Dimension(200, 200));
+        content.add(label2, BorderLayout.SOUTH);
         panel.add(content, BorderLayout.CENTER);
+        panel.revalidate();
+        panel.repaint();
     }
 
     public JButton makeButton(int x) {
-            JButton button = new JButton(x + "");
-            button.addActionListener(e -> {
-                MoodEntry entry = new MoodEntry(
-                    ZonedDateTime.now(),
-                    x
-            );
-
+        JButton button = new JButton(String.valueOf(x));
+        Dimension buttonSize = new Dimension(44, 44);
+        button.setPreferredSize(buttonSize);
+        button.setMinimumSize(buttonSize);
+        button.setMaximumSize(buttonSize);
+        button.addActionListener(e -> {
+            MoodEntry entry = new MoodEntry(ZonedDateTime.now(), x);
             entries.add(entry);
             tracker.save(entries);
-
-            panel.removeAll();
             showButtonsies();
-            panel.revalidate();
-            panel.repaint();
         });
         return button;
     }
