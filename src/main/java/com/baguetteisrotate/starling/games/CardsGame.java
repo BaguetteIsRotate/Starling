@@ -2,9 +2,6 @@ package com.baguetteisrotate.starling.games;
 
 import java.util.HashSet;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
 public class CardsGame {
     private Card answer;
     private Card[] cards;

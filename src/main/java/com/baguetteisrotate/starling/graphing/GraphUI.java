@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 import com.baguetteisrotate.starling.Tracker;
 import com.baguetteisrotate.starling.games.CardScoreEntry;
@@ -39,8 +40,13 @@ public class GraphUI {
         chartPanel2.setMinimumSize(new Dimension(300, 180));
         chartPanel2.setPreferredSize(new Dimension(350, 220));
 
-        panel.add(chartPanel, BorderLayout.NORTH);
-        panel.add(chartPanel2, BorderLayout.CENTER);
+        
+        JSplitPane chart1And2 = new JSplitPane(
+                JSplitPane.VERTICAL_SPLIT, chartPanel, chartPanel2);
+        chart1And2.setResizeWeight(0.5);
+        chart1And2.setDividerLocation(0.5);
+        
+        panel.add(chart1And2, BorderLayout.CENTER);
 
         return panel;
     }
