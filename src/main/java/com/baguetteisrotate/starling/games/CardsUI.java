@@ -32,7 +32,7 @@ public class CardsUI {
     private JButton continueButton;
     private String currmessage;
     private HashMap<String, Integer> statmap = CardEntry.load();
-    private final ArrayList<JButton> cardButtons = new ArrayList<>();
+    private final ArrayList<JButton> listiesOfButtonsies = new ArrayList<>();
     private CardsGame currentGame;
     private Timer memorizeTimer;
     private final Tracker<CardScoreEntry> scoreTracker =
@@ -44,11 +44,6 @@ public class CardsUI {
         return theMother;
     }
 
-    /**
-     * Shows the game in the supplied container, replacing its current contents.
-     *
-     * @param parent the container which will display the game
-     */
     public void addGametoPanel(JPanel parent) {
         theMother = Objects.requireNonNull(parent, "parent");
         theMother.setLayout(new BorderLayout());
@@ -84,7 +79,7 @@ public class CardsUI {
 
     private void updatePanel() {
         stopMemorizeTimer();
-        currentGame = new CardsGame(6, 1, 20);
+        currentGame = new CardsGame(6, 1, 9);
         currmessage = "Which card had the number " + currentGame.makeQuestion() + "?";
         panel = makeGamePanel(currentGame.getCards());
 
@@ -107,10 +102,10 @@ public class CardsUI {
         JPanel cardGrid = new JPanel(new GridLayout(2, 3, 12, 12));
         cardGrid.setBackground(PAGE_COLOR);
         cardGrid.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        cardButtons.clear();
+        listiesOfButtonsies.clear();
         for (Card card : cards) {
             JButton button = makeButton(card);
-            cardButtons.add(button);
+            listiesOfButtonsies.add(button);
             cardGrid.add(button);
         }
         gamePanel.add(cardGrid, BorderLayout.CENTER);
@@ -145,12 +140,12 @@ public class CardsUI {
     }
 
     private void startMemorizeTimer() {
-        for (JButton button : cardButtons) {
+        for (JButton button : listiesOfButtonsies) {
             button.setEnabled(false);
         }
 
         memorizeTimer = new Timer(10000, e -> {
-            for (JButton button : cardButtons) {
+            for (JButton button : listiesOfButtonsies) {
                 button.setText("?");
                 button.setEnabled(true);
             }
@@ -180,8 +175,8 @@ public class CardsUI {
             boolean correct = currentGame.isCorrect(card);
             CardEntry.update(statmap, correct);
 
-            for (int i = 0; i < cardButtons.size(); i++) {
-                JButton cardButton = cardButtons.get(i);
+            for (int i = 0; i < listiesOfButtonsies.size(); i++) {
+                JButton cardButton = listiesOfButtonsies.get(i);
                 cardButton.setText(String.valueOf(currentGame.getCards()[i].getNum()));
                 cardButton.setEnabled(false);
             }
