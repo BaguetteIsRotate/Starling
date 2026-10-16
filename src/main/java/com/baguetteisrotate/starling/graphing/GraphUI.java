@@ -26,7 +26,7 @@ public class GraphUI {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
 
         List<MoodEntry> entries = tracker.loadData();
-        Graph<MoodEntry> graph = new Graph<>("Mood over Time", "Date", "Mood", entries, 1.0, 5.0);
+        Graph<MoodEntry> graph = new Graph<>("Mood over Time", "Date", "Mood", entries, 0.5, 5.5);
 
         List<CardScoreEntry> entries2 = tracker2.loadData();
         Graph<CardScoreEntry> graph2 = new Graph<>("Activity Performance over Time", "Date", "Score", entries2);
