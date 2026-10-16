@@ -33,13 +33,23 @@ public class Graph<T extends Entry> {
     private String ylabel;
     private String title;
     private List<T> entries;
-    // constructor method with input values
+
+    private Double minimum;
+    private Double maximum;
+
     public Graph(String title, String xlabel, String ylabel,
-            List<T> entries) {
+        List<T> entries) {
+        this(title, xlabel, ylabel, entries, null, null);                
+    }
+
+    public Graph(String title, String xlabel, String ylabel,
+        List<T> entries, Double minimum, Double maximum) {
         this.title = title;
         this.xlabel = xlabel;
         this.ylabel = ylabel;
         this.entries = entries;
+        this.minimum = minimum;
+        this.maximum = maximum;
     }
 
     public JPanel makePanel() {
@@ -87,7 +97,7 @@ public class Graph<T extends Entry> {
         panel.add(chartPanel, BorderLayout.CENTER);
 
         return panel;
-        
+
     }
 
     private void formatChart(JFreeChart chart) {
@@ -126,7 +136,10 @@ public class Graph<T extends Entry> {
         NumberAxis rangeAxis =
                 (NumberAxis) plot.getRangeAxis();
 
-        rangeAxis.setRange(1.0, 5.0);
+
+        if (minimum != null && maximum != null) {
+                rangeAxis.setRange(minimum, maximum);
+        }
 
         rangeAxis.setStandardTickUnits(
                 NumberAxis.createIntegerTickUnits()
