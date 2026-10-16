@@ -1,23 +1,13 @@
 package com.baguetteisrotate.starling;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
-import com.baguetteisrotate.starling.graphing.Graph;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 public class Tracker<T extends Entry> {
 
@@ -47,7 +37,7 @@ public class Tracker<T extends Entry> {
 
         } catch (IOException e) {
             throw new RuntimeException(
-                    "Could not load mood history from " + path, e
+                    "Could not load sfrom " + path, e
             );
         }
     }
@@ -63,7 +53,7 @@ public class Tracker<T extends Entry> {
 
         } catch (IOException e) {
             throw new RuntimeException(
-                    "Could not save mood history to " + path, e
+                    "Could not save to " + path, e
             );
         }
     }

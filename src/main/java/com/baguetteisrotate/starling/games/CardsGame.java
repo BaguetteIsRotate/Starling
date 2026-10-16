@@ -2,15 +2,11 @@ package com.baguetteisrotate.starling.games;
 
 import java.util.HashSet;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
 public class CardsGame {
     private Card answer;
     private Card[] cards;
     private int currscore;
     private int currstreak;
-    private String currmessage;
 
     public CardsGame(int numCards, int lowBound, int highBound) {
         cards = makeCards(numCards, lowBound, highBound);

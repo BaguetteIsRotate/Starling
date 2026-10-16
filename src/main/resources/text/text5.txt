@@ -1,0 +1,13 @@
+Alzheimer's disease(AD) is a neurodegenerative disease which accounts for about two-thirds of dementia cases. In 2022, it was the seventh leading cause of death in the United States. Caused by an accumulation of abnormal plaques and tangles of nerve fibers in the brain, Alzheimer's disease remains incurable. \[[1](https://www.ncbi.nlm.nih.gov/books/NBK499922/)\]
+
+Though much attention goes to the physical and mental burden that AD creates on the patient's family or caretaker – and rightfully so – AD can and does create an emotional burden for the patient as well. It is paramount that we consider the individual who is most directly affected by the illness.
+
+Starling, named after the bird behind murmurations [3], provides comfort and potential cognitive benefits to patients with AD. Studies have shown that cognitive activities alongside physical and social activities may provide benefits for patients. [2] The app offers information and cognitive activities, which can be accessed by clicking the respective buttons as shown below:
+
+The app prioritizes a simple, easy-to-use UI with large buttons to accommodate Alzheimer's patients. The background color is Cosmic Latte (hex: #FFF8E7), which astronomers at Johns Hopkins University found in 2002 by mixing the light of more than 200,000 galaxies, thus earning it the title "the average color of the universe". This color was chosen since stars represent hope and guidance.
+
+References: 
+1.  Lui F, Tsao JW. Alzheimer Disease. ncbibooksFebruary 12, 2024. Accessed August 7, 2026. [https://www.ncbi.nlm.nih.gov/books/NBK499922/](https://www.ncbi.nlm.nih.gov/books/NBK499922/)
+2.  Pahlavani HA. Exercise therapy to prevent and treat Alzheimer’s disease. Frontiers in Aging Neuroscience2023;15. [doi:10.3389/fnagi.2023.1243869](https://pubmed.ncbi.nlm.nih.gov/37600508/)
+‌3. Wodny C. Nature’s Shapeshifters: Bird Murmurations. Inhf.org September 24, 2024. Accessed August 8, 2026. [https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations)
+‌
