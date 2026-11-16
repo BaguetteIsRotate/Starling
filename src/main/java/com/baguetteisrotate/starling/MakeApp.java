@@ -55,7 +55,7 @@ public class MakeApp extends JFrame {
     public MakeApp() {
         super("Starling");
         //setSize(393, 793);
-        //the above size would be for mobile
+        //the above size would be for mobile, which this app is currently unavailable for.
         setSize(975, 686);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
