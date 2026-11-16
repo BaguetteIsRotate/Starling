@@ -8,11 +8,13 @@ Though much attention goes to the physical and mental burden that AD creates on 
 
 Starling, named after the bird behind [murmurations](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations) \[[3](https://www.inhf.org/about-us/blog/2024/09/24/natures-shapeshifters-bird-murmurations)\], provides comfort and potential cognitive benefits to patients with AD. Studies have shown that cognitive activities alongside physical and social activities may provide benefits for patients. \[[2](https://pubmed.ncbi.nlm.nih.gov/37600508/)\] The app offers information and cognitive activities, which can be accessed by clicking the respective buttons as shown below:
 
-Here is a silent video tour of the current UI. Note that on the Info page, the buttons labeled "B", "C", and "D" do not actually lead to articles yet; they still have to be written.
+Here is a  tour of the current UI. 
 
-https://github.com/user-attachments/assets/64629200-833c-42c5-8421-344b9f78c06f
+[https://github.com/user-attachments/assets/64629200-833c-42c5-8421-344b9f78c06f](https://vimeo.com/1238564459?share=copy&fl=sv&fe=ci)
 
 Starling prioritizes a simple, easy-to-use UI with large buttons to accommodate Alzheimer's patients. The background color is Cosmic Latte (hex: #FFF8E7), which astronomers at Johns Hopkins University found in 2002 by mixing the light of more than 200,000 galaxies, thus earning it the title "the average color of the universe". This color was chosen since stars represent hope and guidance.
+
+To run the app, download the code and run the file src/main/java/com/baguetteisrotate/starling/Starling.java.
 
 References: 
 1.  Lui F, Tsao JW. Alzheimer Disease. ncbibooksFebruary 12, 2024. Accessed August 7, 2026. [https://www.ncbi.nlm.nih.gov/books/NBK499922/](https://www.ncbi.nlm.nih.gov/books/NBK499922/)
